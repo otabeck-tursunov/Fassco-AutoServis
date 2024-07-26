@@ -7,4 +7,6 @@ urlpatterns = [
 
     path('customers/', CustomerListCreateAPIView.as_view()),
     path('customers/<int:pk>/', CustomerRetrieveUpdateDestroyAPIView.as_view()),
+
+    path('cars/', CarListCreateAPIView.as_view()),
 ]

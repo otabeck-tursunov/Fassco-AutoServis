@@ -44,9 +44,11 @@ class CustomerListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         queryset = self.queryset.filter(branch=self.request.user.branch)
+
         order_by = self.request.query_params.get('order_by', None)
         if order_by is not None:
             queryset = queryset.order_by(order_by)
+
         return queryset
 
 
@@ -73,7 +75,19 @@ class CarListCreateAPIView(ListCreateAPIView):
                 name='order_by',
                 in_=openapi.IN_QUERY,
                 type=openapi.TYPE_STRING,
-                enum=['code', 'name']
+                enum=['code', 'name', 'state_number']
+            ),
+            openapi.Parameter(
+                name='customer_id',
+                description="Filter by Customer ID",
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                name='color',
+                description="Filter by Color",
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
             )
         ]
     )
@@ -82,4 +96,17 @@ class CarListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         queryset = self.queryset.filter(branch=self.request.user.branch)
+
+        order_by = self.request.query_params.get('order_by', None)
+        if order_by is not None:
+            queryset = queryset.order_by(order_by)
+
+        customer_id = self.request.query_params.get('customer_id', None)
+        if customer_id is not None:
+            queryset = queryset.filter(customer_id=customer_id)
+
+        color_filter = self.request.query_params.get('color', None)
+        if color_filter is not None:
+            queryset = queryset.filter(color=color_filter)
+
         return queryset
