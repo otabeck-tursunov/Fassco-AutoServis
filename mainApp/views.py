@@ -1,5 +1,6 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import *
 from rest_framework.permissions import *
 from django.shortcuts import get_object_or_404
@@ -28,6 +29,8 @@ class CustomerListCreateAPIView(ListCreateAPIView):
 
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['first_name', 'last_name', 'phone_number']
 
     def perform_create(self, serializer):
         serializer.save(branch=self.request.user.branch)
@@ -71,6 +74,8 @@ class CarListCreateAPIView(ListCreateAPIView):
 
     queryset = Car.objects.all()
     serializer_class = CarSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['code', 'name', 'brand', 'color', 'state_number']
 
     def perform_create(self, serializer):
         serializer.save(branch=self.request.user.branch)
@@ -134,6 +139,8 @@ class ProviderListCreateAPIView(ListCreateAPIView):
 
     queryset = Provider.objects.all()
     serializer_class = ProviderSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['name', 'phone_number']
 
     def perform_create(self, serializer):
         serializer.save(branch=self.request.user.branch)
@@ -189,6 +196,8 @@ class ProductListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAdminUser,)
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['code', 'name']
 
     def perform_create(self, serializer):
         serializer.save(branch=self.request.user.branch)
@@ -232,6 +241,7 @@ class ImportProductListCreateAPIView(ListCreateAPIView):
 
     queryset = ImportProduct.objects.all()
     serializer_class = ImportProductSerializer
+    filter_backends = [SearchFilter]
 
     @swagger_auto_schema(
         manual_parameters=[
