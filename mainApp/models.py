@@ -77,8 +77,8 @@ class ImportProduct(models.Model):
     debt = models.FloatField(default=0)
 
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     provider = models.ForeignKey(Provider, on_delete=models.SET_NULL, null=True)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -29,6 +29,9 @@ class CustomerListCreateAPIView(ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(branch=self.request.user.branch)
+
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter(
@@ -68,6 +71,9 @@ class CarListCreateAPIView(ListCreateAPIView):
 
     queryset = Car.objects.all()
     serializer_class = CarSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(branch=self.request.user.branch)
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -110,3 +116,202 @@ class CarListCreateAPIView(ListCreateAPIView):
             queryset = queryset.filter(color=color_filter)
 
         return queryset
+
+
+class CarRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAdminUser,)
+
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+
+    def get_object(self):
+        queryset = self.queryset.filter(branch=self.request.user.branch)
+        return get_object_or_404(queryset, pk=self.kwargs['pk'])
+
+
+class ProviderListCreateAPIView(ListCreateAPIView):
+    permission_classes = (IsAdminUser,)
+
+    queryset = Provider.objects.all()
+    serializer_class = ProviderSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(branch=self.request.user.branch)
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name='order_by',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
+                enum=['name', 'debt']
+            ),
+            openapi.Parameter(
+                name='debt',
+                description="true: qarzdorlik bo'lgan Providerlar, false: qarzdorlik bo'lmagan Providerlar!",
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_BOOLEAN,
+            )
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = self.queryset.filter(branch=self.request.user.branch)
+
+        order_by = self.request.query_params.get('order_by', None)
+        if order_by is not None:
+            queryset = queryset.order_by(order_by)
+
+        debt_filter = self.request.query_params.get('debt', None)
+        if debt_filter is not None:
+            if debt_filter == 'true':
+                queryset = queryset.filter(debt__gt=0)
+            elif debt_filter == 'false':
+                queryset = queryset.filter(debt=0)
+
+        return queryset
+
+
+class ProviderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAdminUser,)
+
+    queryset = Provider.objects.all()
+    serializer_class = ProviderSerializer
+
+    def get_object(self):
+        queryset = self.queryset.filter(branch=self.request.user.branch)
+        return get_object_or_404(queryset, pk=self.kwargs['pk'])
+
+
+class ProductListCreateAPIView(ListCreateAPIView):
+    permission_classes = (IsAdminUser,)
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(branch=self.request.user.branch)
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name='order_by',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
+                enum=['name', 'code', 'amount', 'max_discount']
+            )
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = self.queryset.filter(branch=self.request.user.branch)
+
+        order_by = self.request.query_params.get('order_by', None)
+        if order_by is not None:
+            queryset = queryset.order_by(order_by)
+
+        return queryset
+
+
+class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAdminUser,)
+
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def get_object(self):
+        queryset = self.queryset.filter(branch=self.request.user.branch)
+        return get_object_or_404(queryset, pk=self.kwargs['pk'])
+
+
+class ImportProductListCreateAPIView(ListCreateAPIView):
+    permission_classes = (IsAdminUser,)
+
+    queryset = ImportProduct.objects.all()
+    serializer_class = ImportProductSerializer
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name='order_by',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
+                enum=['amount', 'debt', 'created_at', '-created_at']
+            ),
+            openapi.Parameter(
+                name='provider_id',
+                description="Filter by Provider ID",
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_INTEGER,
+            )
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = self.queryset.filter(branch=self.request.user.branch)
+
+        order_by = self.request.query_params.get('order_by', None)
+        if order_by is not None:
+            queryset = queryset.order_by(order_by)
+
+        provider_id = self.request.query_params.get('provider_id', None)
+        if provider_id is not None:
+            queryset = queryset.filter(provider_id=provider_id)
+
+        return queryset
+
+
+class ImportProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAdminUser,)
+
+    queryset = ImportProduct.objects.all()
+    serializer_class = ImportProductSerializer
+
+    def get_object(self):
+        queryset = self.queryset.filter(branch=self.request.user.branch)
+        return get_object_or_404(queryset, pk=self.kwargs['pk'])
+
+
+class ServiceListCreateAPIView(ListCreateAPIView):
+    permission_classes = (IsAdminUser,)
+
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name='order_by',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
+                enum=['name', 'price', 'created_at', '-created_at']
+            )
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        queryset = self.queryset.filter(branch=self.request.user.branch)
+
+        order_by = self.request.query_params.get('order_by', None)
+        if order_by is not None:
+            queryset = queryset.order_by(order_by)
+
+        return queryset
+
+
+class ServiceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAdminUser,)
+
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+
+    def get_object(self):
+        queryset = self.queryset.filter(branch=self.request.user.branch)
+        return get_object_or_404(queryset, pk=self.kwargs['pk'])
