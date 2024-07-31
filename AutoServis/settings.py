@@ -57,6 +57,17 @@ JAZZMIN_SETTINGS = {
     'show_ui_builder': True,
 }
 
+SWAGGER_SETTINGS = {
+    'DEFAULT_API_URL': '',
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
