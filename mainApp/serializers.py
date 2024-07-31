@@ -19,6 +19,18 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class CarSerializer(serializers.ModelSerializer):
+    customer = CustomerSerializer()
+
+    class Meta:
+        model = Car
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True}
+        }
+
+
+class CarPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = '__all__'
@@ -39,6 +51,18 @@ class ProviderSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    provider = ProviderSerializer()
+
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True}
+        }
+
+
+class ProductPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
@@ -49,6 +73,18 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ImportProductSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = ImportProduct
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True}
+        }
+
+
+class ImportProductPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImportProduct
         fields = '__all__'

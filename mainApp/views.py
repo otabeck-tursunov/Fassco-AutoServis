@@ -80,6 +80,11 @@ class CarListCreateAPIView(ListCreateAPIView):
     filter_backends = [SearchFilter]
     search_fields = ['code', 'name', 'brand', 'color', 'state_number']
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return CarSerializer
+        return CarPostSerializer
+
     def perform_create(self, serializer):
         serializer.save(branch=self.request.user.branch)
 
@@ -202,6 +207,11 @@ class ProductListCreateAPIView(ListCreateAPIView):
     filter_backends = [SearchFilter]
     search_fields = ['code', 'name']
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return ProductSerializer
+        return ProductPostSerializer
+
     def perform_create(self, serializer):
         serializer.save(branch=self.request.user.branch)
 
@@ -286,12 +296,13 @@ class ImportProductListCreateAPIView(APIView):
         request_body=ImportProductSerializer,
     )
     def post(self, request):
-        serializer = ImportProductSerializer(data=request.data)
+        serializer = ImportProductPostSerializer(data=request.data)
         if serializer.is_valid():
             product = Product.objects.get(pk=serializer.validated_data['product'].id)
 
             product.amount += serializer.validated_data['amount']
             product.import_price = serializer.validated_data['import_price']
+            product.provider = serializer.validated_data['provider']
             product.save()
 
             total = serializer.validated_data['amount'] * serializer.validated_data['import_price']

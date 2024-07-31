@@ -45,6 +45,11 @@ class ExpenseListCreateView(ListCreateAPIView):
     search_fields = ['description'],
     ordering_fields = '__all__'
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return ExpenseSerializer
+        return ExpensePostSerializer
+
     def get_queryset(self):
         return self.queryset.filter(branch=self.request.user.branch)
 
@@ -70,6 +75,11 @@ class OrderListCreateAPIView(ListCreateAPIView):
 
     filter_backends = [OrderingFilter, ]
     ordering_fields = '__all__'
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return OrderSerializer
+        return OrderPostSerializer
 
     def perform_create(self, serializer):
         serializer.save(branch=self.request.user.branch)
@@ -116,7 +126,7 @@ class OrderProductListCreateAPIView(APIView):
         request_body=OrderProductSerializer,
     )
     def post(self, request):
-        serializer = OrderProductSerializer(data=request.data)
+        serializer = OrderProductPostSerializer(data=request.data)
 
         if serializer.is_valid():
             order = get_object_or_404(Order, id=serializer.validated_data['order'].id)
@@ -199,7 +209,7 @@ class OrderServiceListCreateAPIView(APIView):
         request_body=OrderServiceSerializer,
     )
     def post(self, request):
-        serializer = OrderServiceSerializer(data=request.data)
+        serializer = OrderServicePostSerializer(data=request.data)
         if serializer.is_valid():
             order = get_object_or_404(Order, id=serializer.validated_data['order'].id)
             service = get_object_or_404(Service, id=serializer.validated_data['service'].id)

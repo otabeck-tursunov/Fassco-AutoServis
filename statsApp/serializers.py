@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from mainApp.serializers import CustomerSerializer
 from .models import *
 
 
@@ -13,6 +15,18 @@ class ExpenseTypeSerializer(serializers.ModelSerializer):
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
+    type = ExpenseTypeSerializer()
+
+    class Meta:
+        model = Expense
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
+        }
+
+
+class ExpensePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
         fields = '__all__'
@@ -23,6 +37,8 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    customer = CustomerSerializer()
+
     class Meta:
         model = Order
         fields = '__all__'
@@ -35,10 +51,37 @@ class OrderSerializer(serializers.ModelSerializer):
         order = super(OrderSerializer, self).to_representation(instance)
 
         order_products = OrderProduct.objects.filter(order=instance)
-        order_products_serializer = OrderProductSerializer(order_products, many=True)
+        order_products_serializer = OrderProductPostSerializer(order_products, many=True)
 
         order_services = OrderService.objects.filter(order=instance)
-        order_services_serializer = OrderServiceSerializer(order_services, many=True)
+        order_services_serializer = OrderServicePostSerializer(order_services, many=True)
+
+        order.update(
+            {
+                'products': order_products_serializer.data,
+                'services': order_services_serializer.data
+            }
+        )
+        return order
+
+
+class OrderPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
+        }
+
+    def to_representation(self, instance):
+        order = super(OrderPostSerializer, self).to_representation(instance)
+
+        order_products = OrderProduct.objects.filter(order=instance)
+        order_products_serializer = OrderServicePostSerializer(order_products, many=True)
+
+        order_services = OrderService.objects.filter(order=instance)
+        order_services_serializer = OrderServicePostSerializer(order_services, many=True)
 
         order.update(
             {
@@ -50,6 +93,18 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class OrderProductSerializer(serializers.ModelSerializer):
+    order = OrderSerializer()
+
+    class Meta:
+        model = OrderProduct
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
+        }
+
+
+class OrderProductPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
         fields = '__all__'
@@ -60,6 +115,18 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 
 class OrderServiceSerializer(serializers.ModelSerializer):
+    order = OrderSerializer()
+
+    class Meta:
+        model = OrderService
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
+        }
+
+
+class OrderServicePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderService
         fields = '__all__'
