@@ -75,6 +75,8 @@ class Product(models.Model):
 
 class ImportProduct(models.Model):
     amount = models.FloatField(default=0)
+    import_price = models.FloatField(blank=True, null=True)
+    total = models.FloatField(default=0)
     debt = models.FloatField(default=0)
 
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)

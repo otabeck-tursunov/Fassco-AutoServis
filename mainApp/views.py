@@ -1,9 +1,12 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import *
 from rest_framework.permissions import *
 from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from userApp.permissions import *
 from .serializers import *
@@ -236,15 +239,8 @@ class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return get_object_or_404(queryset, pk=self.kwargs['pk'])
 
 
-class ImportProductListCreateAPIView(ListCreateAPIView):
+class ImportProductListCreateAPIView(APIView):
     permission_classes = (IsAuthenticated,)
-
-    queryset = ImportProduct.objects.all()
-    serializer_class = ImportProductSerializer
-    filter_backends = [SearchFilter]
-
-    def perform_create(self, serializer):
-        serializer.save(branch=self.request.user.branch)
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -252,31 +248,56 @@ class ImportProductListCreateAPIView(ListCreateAPIView):
                 name='order_by',
                 in_=openapi.IN_QUERY,
                 type=openapi.TYPE_STRING,
-                enum=['amount', 'debt', 'created_at', '-created_at']
+                enum=['amount', 'import_price', 'total', 'debt', 'created_at', '-created_at']
             ),
             openapi.Parameter(
                 name='provider_id',
                 description="Filter by Provider ID",
                 in_=openapi.IN_QUERY,
                 type=openapi.TYPE_INTEGER,
+            ),
+            openapi.Parameter(
+                name='product_id',
+                description="Filter by Product ID",
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_INTEGER,
             )
         ]
     )
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+    def get(self, request):
+        import_products = ImportProduct.objects.filter(branch=request.user.branch)
 
-    def get_queryset(self):
-        queryset = self.queryset.filter(branch=self.request.user.branch)
+        filter_provider_id = request.query_params.get('provider_id', None)
+        if filter_provider_id is not None:
+            import_products = import_products.filter(provider_id=filter_provider_id)
 
-        order_by = self.request.query_params.get('order_by', None)
+        filter_product_id = request.query_params.get('product_id', None)
+        if filter_product_id is not None:
+            import_products = import_products.filter(product_id=filter_product_id)
+
+        order_by = request.query_params.get('order_by', None)
         if order_by is not None:
-            queryset = queryset.order_by(order_by)
+            import_products = import_products.order_by(order_by)
 
-        provider_id = self.request.query_params.get('provider_id', None)
-        if provider_id is not None:
-            queryset = queryset.filter(provider_id=provider_id)
+        serializer = ImportProductSerializer(import_products, many=True)
+        return Response(serializer.data)
 
-        return queryset
+    @swagger_auto_schema(
+        request_body=ImportProductSerializer,
+    )
+    def post(self, request):
+        serializer = ImportProductSerializer(data=request.data)
+        if serializer.is_valid():
+            product = Product.objects.get(pk=serializer.validated_data['product'].id)
+
+            product.amount += serializer.validated_data['amount']
+            product.import_price = serializer.validated_data['import_price']
+            product.save()
+
+            total = serializer.validated_data['amount'] * serializer.validated_data['import_price']
+            serializer.save(branch=request.user.branch, total=total)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ImportProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
