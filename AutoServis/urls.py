@@ -23,4 +23,5 @@ urlpatterns = [
     path('', schema_view.with_ui('swagger', cache_timeout=0)),
     path('users/', include('userApp.urls')),
     path('main/', include('mainApp.urls')),
+    path('stats/', include('statsApp.urls')),
 ]

@@ -11,21 +11,21 @@ from .models import *
 
 
 class BranchesListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsSuperUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
 
 
 class BranchRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsSuperUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
 
 
 class CustomerListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
@@ -59,7 +59,7 @@ class CustomerListCreateAPIView(ListCreateAPIView):
 
 
 class CustomerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
@@ -70,7 +70,7 @@ class CustomerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class CarListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Car.objects.all()
     serializer_class = CarSerializer
@@ -124,7 +124,7 @@ class CarListCreateAPIView(ListCreateAPIView):
 
 
 class CarRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Car.objects.all()
     serializer_class = CarSerializer
@@ -135,7 +135,7 @@ class CarRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class ProviderListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Provider.objects.all()
     serializer_class = ProviderSerializer
@@ -182,7 +182,7 @@ class ProviderListCreateAPIView(ListCreateAPIView):
 
 
 class ProviderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Provider.objects.all()
     serializer_class = ProviderSerializer
@@ -193,7 +193,7 @@ class ProviderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class ProductListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [SearchFilter]
@@ -226,7 +226,7 @@ class ProductListCreateAPIView(ListCreateAPIView):
 
 
 class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -237,11 +237,14 @@ class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class ImportProductListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = ImportProduct.objects.all()
     serializer_class = ImportProductSerializer
     filter_backends = [SearchFilter]
+
+    def perform_create(self, serializer):
+        serializer.save(branch=self.request.user.branch)
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -277,7 +280,7 @@ class ImportProductListCreateAPIView(ListCreateAPIView):
 
 
 class ImportProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = ImportProduct.objects.all()
     serializer_class = ImportProductSerializer
@@ -288,10 +291,13 @@ class ImportProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class ServiceListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(branch=self.request.user.branch)
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -317,7 +323,7 @@ class ServiceListCreateAPIView(ListCreateAPIView):
 
 
 class ServiceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
 
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer

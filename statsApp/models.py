@@ -21,7 +21,7 @@ class Expense(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.type.name + " " + self.price
+        return self.type.name + " " + str(self.price)
 
 
 class Order(models.Model):
@@ -45,6 +45,7 @@ class OrderProduct(models.Model):
 
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.order) + ": " + str(self.product)
@@ -57,6 +58,7 @@ class OrderService(models.Model):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True)
     staff = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.order) + ": " + str(self.service)
