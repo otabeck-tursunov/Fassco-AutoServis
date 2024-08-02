@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e*&m8&-6i3q2u4caoex&p$f%jpaf$%p2y!a@+fua#ecnx^l(6b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'userApp',
     'mainApp',
     'statsApp',
+    'statisticApp',
 
     'rest_framework',
     'rest_framework_simplejwt',
@@ -107,10 +108,15 @@ WSGI_APPLICATION = 'AutoServis.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydb',
+        'USER': 'admin',
+        'PASSWORD': '11223344',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
