@@ -24,4 +24,5 @@ urlpatterns = [
     path('users/', include('userApp.urls')),
     path('main/', include('mainApp.urls')),
     path('stats/', include('statsApp.urls')),
+    path('statistics/', include('statisticApp.urls')),
 ]

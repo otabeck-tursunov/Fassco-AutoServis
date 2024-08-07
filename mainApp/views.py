@@ -202,6 +202,7 @@ class ProviderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 class ProductListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [SearchFilter]

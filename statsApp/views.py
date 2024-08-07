@@ -123,7 +123,7 @@ class OrderProductListCreateAPIView(APIView):
         return Response(serializer.data)
 
     @swagger_auto_schema(
-        request_body=OrderProductSerializer,
+        request_body=OrderProductPostSerializer,
     )
     def post(self, request):
         serializer = OrderProductPostSerializer(data=request.data)
