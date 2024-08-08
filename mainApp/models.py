@@ -85,7 +85,7 @@ class ImportProduct(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.product.name
+        return f"{self.product} {self.amount}"
 
 
 class Service(models.Model):
