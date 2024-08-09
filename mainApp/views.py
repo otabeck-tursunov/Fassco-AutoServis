@@ -245,6 +245,11 @@ class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return ProductSerializer
+        return ProductPostSerializer
+
     def get_object(self):
         queryset = self.queryset.filter(branch=self.request.user.branch)
         return get_object_or_404(queryset, pk=self.kwargs['pk'])
@@ -294,7 +299,7 @@ class ImportProductListCreateAPIView(APIView):
         return Response(serializer.data)
 
     @swagger_auto_schema(
-        request_body=ImportProductSerializer,
+        request_body=ImportProductPostSerializer,
     )
     def post(self, request):
         serializer = ImportProductPostSerializer(data=request.data)
