@@ -11,12 +11,13 @@ from rest_framework.views import APIView
 from userApp.permissions import *
 from .serializers import *
 from .models import *
+from AutoServis.paginations import *
 
 
 class BranchesListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    queryset = Branch.objects.all()
+    queryset = Branch.objects.all().order_by('id')
     serializer_class = BranchSerializer
 
 
@@ -30,7 +31,7 @@ class BranchRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class CustomerListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    queryset = Customer.objects.all()
+    queryset = Customer.objects.all().order_by('id')
     serializer_class = CustomerSerializer
     filter_backends = [SearchFilter]
     search_fields = ['first_name', 'last_name', 'phone_number']
@@ -57,6 +58,8 @@ class CustomerListCreateAPIView(ListCreateAPIView):
         order_by = self.request.query_params.get('order_by', None)
         if order_by is not None:
             queryset = queryset.order_by(order_by)
+        else:
+            queryset = queryset.order_by('id')
 
         return queryset
 
@@ -75,7 +78,7 @@ class CustomerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class CarListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    queryset = Car.objects.all()
+    queryset = Car.objects.all().order_by('id')
     serializer_class = CarSerializer
     filter_backends = [SearchFilter]
     search_fields = ['code', 'name', 'brand', 'color', 'state_number']
@@ -119,6 +122,8 @@ class CarListCreateAPIView(ListCreateAPIView):
         order_by = self.request.query_params.get('order_by', None)
         if order_by is not None:
             queryset = queryset.order_by(order_by)
+        else:
+            queryset = queryset.order_by('id')
 
         customer_id = self.request.query_params.get('customer_id', None)
         if customer_id is not None:
@@ -145,7 +150,7 @@ class CarRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class ProviderListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    queryset = Provider.objects.all()
+    queryset = Provider.objects.all().order_by('id')
     serializer_class = ProviderSerializer
     filter_backends = [SearchFilter]
     search_fields = ['name', 'phone_number']
@@ -178,6 +183,8 @@ class ProviderListCreateAPIView(ListCreateAPIView):
         order_by = self.request.query_params.get('order_by', None)
         if order_by is not None:
             queryset = queryset.order_by(order_by)
+        else:
+            queryset = queryset.order_by('id')
 
         debt_filter = self.request.query_params.get('debt', None)
         if debt_filter is not None:
@@ -203,7 +210,7 @@ class ProviderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class ProductListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
     filter_backends = [SearchFilter]
     search_fields = ['code', 'name']
@@ -235,6 +242,8 @@ class ProductListCreateAPIView(ListCreateAPIView):
         order_by = self.request.query_params.get('order_by', None)
         if order_by is not None:
             queryset = queryset.order_by(order_by)
+        else:
+            queryset = queryset.order_by('id')
 
         return queryset
 
@@ -257,6 +266,7 @@ class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 class ImportProductListCreateAPIView(APIView):
     permission_classes = (IsAuthenticated,)
+    pagination_class = CustomPagination
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -277,11 +287,23 @@ class ImportProductListCreateAPIView(APIView):
                 description="Filter by Product ID",
                 in_=openapi.IN_QUERY,
                 type=openapi.TYPE_INTEGER,
+            ),
+            openapi.Parameter(
+                name='page',
+                description="A page number within the paginated result set.",
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_INTEGER,
+            ),
+            openapi.Parameter(
+                name='page_size',
+                description='Number of results to return per page.',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_INTEGER,
             )
         ]
     )
     def get(self, request):
-        import_products = ImportProduct.objects.filter(branch=request.user.branch)
+        import_products = ImportProduct.objects.filter(branch=request.user.branch).order_by('id')
 
         filter_provider_id = request.query_params.get('provider_id', None)
         if filter_provider_id is not None:
@@ -294,9 +316,13 @@ class ImportProductListCreateAPIView(APIView):
         order_by = request.query_params.get('order_by', None)
         if order_by is not None:
             import_products = import_products.order_by(order_by)
+        else:
+            import_products = import_products.order_by('id')
 
-        serializer = ImportProductSerializer(import_products, many=True)
-        return Response(serializer.data)
+        paginator = CustomPagination()
+        result_page = paginator.paginate_queryset(import_products, request)
+        serializer = ImportProductSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     @swagger_auto_schema(
         request_body=ImportProductPostSerializer,
@@ -331,7 +357,7 @@ class ImportProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class ServiceListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    queryset = Service.objects.all()
+    queryset = Service.objects.all().order_by('id')
     serializer_class = ServiceSerializer
 
     def perform_create(self, serializer):
@@ -356,6 +382,8 @@ class ServiceListCreateAPIView(ListCreateAPIView):
         order_by = self.request.query_params.get('order_by', None)
         if order_by is not None:
             queryset = queryset.order_by(order_by)
+        else:
+            queryset = queryset.order_by('id')
 
         return queryset
 

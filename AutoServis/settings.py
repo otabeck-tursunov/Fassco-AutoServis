@@ -40,7 +40,9 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'AutoServis.paginations.CustomPagination',
+    'PAGE_SIZE': 10,
 }
 
 SIMPLE_JWT = {
@@ -123,7 +125,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
