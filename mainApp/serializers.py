@@ -74,6 +74,7 @@ class ProductPostSerializer(serializers.ModelSerializer):
 
 class ImportProductSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
+    provider = ProviderSerializer()
 
     class Meta:
         model = ImportProduct
