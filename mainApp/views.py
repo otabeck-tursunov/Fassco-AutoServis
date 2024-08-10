@@ -142,6 +142,12 @@ class CarRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET' or self.request.method == 'DELETE':
+            return CarSerializer
+        else:
+            return CarPostSerializer
+
     def get_object(self):
         queryset = self.queryset.filter(branch=self.request.user.branch)
         return get_object_or_404(queryset, pk=self.kwargs['pk'])
@@ -348,6 +354,11 @@ class ImportProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     queryset = ImportProduct.objects.all()
     serializer_class = ImportProductSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET' or self.request.method == 'DELETE':
+            return ImportProductSerializer
+        return ImportProductPostSerializer
 
     def get_object(self):
         queryset = self.queryset.filter(branch=self.request.user.branch)

@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from mainApp.models import *
 from userApp.models import User
@@ -64,4 +65,13 @@ class OrderService(models.Model):
         return str(self.order) + ": " + str(self.service)
 
 
-
+# class Salary(models.Model):
+#     staff = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+#     amount = models.FloatField(validators=MinValueValidator(0))
+#     description = models.CharField(max_length=255, blank=True, null=True)
+#
+#     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#
+#     def __str__(self):
+#         return str(self.staff) + ": " + str(self.amount)

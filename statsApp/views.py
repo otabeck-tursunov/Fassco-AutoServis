@@ -63,6 +63,11 @@ class ExpenseRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET' or self.request.method == 'DELETE':
+            return ExpenseSerializer
+        return ExpensePostSerializer
+
     def get_object(self):
         return get_object_or_404(Expense, pk=self.kwargs['pk'], branch=self.request.user.branch)
 
@@ -167,6 +172,11 @@ class OrderProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = OrderProduct.objects.all()
     serializer_class = OrderProductSerializer
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET' or self.request.method == 'DELETE':
+            return OrderProductSerializer
+        return OrderProductPostSerializer
+
     def perform_destroy(self, instance):
         product = get_object_or_404(Product, id=instance.product.id)
         product.amount += instance.amount
@@ -206,7 +216,7 @@ class OrderServiceListCreateAPIView(APIView):
         return Response(serializer.data)
 
     @swagger_auto_schema(
-        request_body=OrderServiceSerializer,
+        request_body=OrderServicePostSerializer,
     )
     def post(self, request):
         serializer = OrderServicePostSerializer(data=request.data)
@@ -228,6 +238,11 @@ class OrderServiceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     queryset = OrderService.objects.all()
     serializer_class = OrderServiceSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET' or self.request.method == 'DELETE':
+            return OrderServiceSerializer
+        return OrderServicePostSerializer
 
     def perform_destroy(self, instance):
         order = get_object_or_404(Order, id=instance.order.id)
