@@ -60,6 +60,7 @@ class Product(models.Model):
     code = models.CharField(max_length=20, blank=True, null=True)
     name = models.CharField(max_length=255)
     amount = models.FloatField(default=0)
+    min_amount = models.FloatField(default=10)
     unit = models.CharField(max_length=50, blank=True, null=True)
     import_price = models.FloatField()
     export_price = models.FloatField(blank=True, null=True)

@@ -5,4 +5,4 @@ from mainApp.serializers import ProductSerializer
 
 class ProductSalesSerializer(serializers.Serializer):
     product = ProductSerializer()
-    total_sales = serializers.FloatField()
+    total_sales = serializers.FloatField(min_value=0)

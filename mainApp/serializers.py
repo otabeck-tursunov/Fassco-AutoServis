@@ -1,4 +1,7 @@
+from django.db.models import Sum
 from rest_framework import serializers
+
+from statsApp.models import OrderProduct
 from .models import *
 
 
@@ -60,6 +63,21 @@ class ProductSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'branch': {'read_only': True}
         }
+
+    def to_representation(self, instance):
+        product = super(ProductSerializer, self).to_representation(instance)
+
+        total_export = OrderProduct.objects.filter(product=instance).aggregate(total_sum=Sum('total'))['total_sum'] or 0
+        product['total_export'] = total_export
+
+        total_import = ImportProduct.objects.filter(product=instance).aggregate(total_import=Sum('total'))[
+                           'total_import'] or 0
+        product['total_import'] = total_import
+
+        total_benefit = total_export - total_import
+        product['total_benefit'] = total_benefit
+
+        return product
 
 
 class ProductPostSerializer(serializers.ModelSerializer):

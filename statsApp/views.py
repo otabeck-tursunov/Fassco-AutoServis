@@ -15,7 +15,7 @@ from .models import *
 class ExpenseTypeListCreateView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    queryset = ExpenseType.objects.all()
+    queryset = ExpenseType.objects.all().order_by('id')
     serializer_class = ExpenseTypeSerializer
 
     def get_queryset(self):
@@ -38,7 +38,7 @@ class ExpenseTypeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 class ExpenseListCreateView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    queryset = Expense.objects.all()
+    queryset = Expense.objects.all().order_by('id')
     serializer_class = ExpenseSerializer
 
     filter_backends = [SearchFilter, OrderingFilter, ]
@@ -70,7 +70,7 @@ class ExpenseRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 class OrderListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('id')
     serializer_class = OrderSerializer
 
     filter_backends = [OrderingFilter, ]
@@ -112,7 +112,7 @@ class OrderProductListCreateAPIView(APIView):
         ]
     )
     def get(self, request):
-        order_products = OrderProduct.objects.filter(branch=self.request.user.branch)
+        order_products = OrderProduct.objects.filter(branch=self.request.user.branch).order_by('id')
 
         filter_order_id = request.query_params.get('order_id', None)
         if filter_order_id is not None:

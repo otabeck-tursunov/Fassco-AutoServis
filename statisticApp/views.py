@@ -28,3 +28,5 @@ class TopSaleProductAPIView(APIView):
             )
         serializer = ProductSalesSerializer(data, many=True)
         return Response(serializer.data)
+
+
