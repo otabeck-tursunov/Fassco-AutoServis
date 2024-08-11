@@ -14,6 +14,10 @@ class User(AbstractUser):
     position = models.CharField(max_length=50, blank=True, null=True)
     role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='Staff')
 
+    # For Staff
+    salary = models.FloatField(blank=True, null=True)
+    part = models.FloatField(blank=True, null=True)
+
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):

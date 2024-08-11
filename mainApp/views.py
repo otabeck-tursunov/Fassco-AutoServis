@@ -81,7 +81,7 @@ class CarListCreateAPIView(ListCreateAPIView):
     queryset = Car.objects.all().order_by('id')
     serializer_class = CarSerializer
     filter_backends = [SearchFilter]
-    search_fields = ['code', 'name', 'brand', 'color', 'state_number']
+    search_fields = ['code', 'name', 'brand', 'color', 'state_number', 'customer__first_name', 'customer__last_name']
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -232,6 +232,13 @@ class ProductListCreateAPIView(ListCreateAPIView):
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter(
+                name='import_required',
+                description="There is little left in the warehouse. Import required!",
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_BOOLEAN,
+
+            ),
+            openapi.Parameter(
                 name='order_by',
                 in_=openapi.IN_QUERY,
                 type=openapi.TYPE_STRING,
@@ -244,6 +251,11 @@ class ProductListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         queryset = self.queryset.filter(branch=self.request.user.branch)
+
+        import_required = self.request.query_params.get('import_required', None)
+        if import_required is not None:
+            if import_required == 'true':
+                queryset = queryset.filter(amount__lte=models.F('min_amount'))
 
         order_by = self.request.query_params.get('order_by', None)
         if order_by is not None:

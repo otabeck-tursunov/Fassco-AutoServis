@@ -23,3 +23,25 @@ class UserSerializer(serializers.ModelSerializer):
         user.is_staff = True
         user.save()
         return user
+
+
+class StaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id', 'username', 'first_name', 'last_name', 'phone_number', 'branch', 'position', 'role', 'salary', 'part',
+            'is_staff', 'is_superuser', 'last_login', 'date_joined'
+        )
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'last_login': {'read_only': True},
+            'date_joined': {'read_only': True},
+            'is_superuser': {'read_only': True},
+            'is_staff': {'read_only': True},
+        }
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        user.is_staff = True
+        user.save()
+        return user

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mainApp.serializers import CustomerSerializer
+from mainApp.serializers import CustomerSerializer, ProductSerializer, ServiceSerializer
 from .models import *
 
 
@@ -94,6 +94,7 @@ class OrderPostSerializer(serializers.ModelSerializer):
 
 class OrderProductSerializer(serializers.ModelSerializer):
     order = OrderSerializer()
+    product = ProductSerializer()
 
     class Meta:
         model = OrderProduct
@@ -116,6 +117,7 @@ class OrderProductPostSerializer(serializers.ModelSerializer):
 
 class OrderServiceSerializer(serializers.ModelSerializer):
     order = OrderSerializer()
+    service = ServiceSerializer()
 
     class Meta:
         model = OrderService
