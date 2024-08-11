@@ -1,3 +1,4 @@
+from django.db.models import Q
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -78,8 +79,9 @@ class OrderListCreateAPIView(ListCreateAPIView):
     queryset = Order.objects.all().order_by('id')
     serializer_class = OrderSerializer
 
-    filter_backends = [OrderingFilter, ]
+    filter_backends = [OrderingFilter, SearchFilter]
     ordering_fields = '__all__'
+    search_fields = ['customer__first_name', 'customer__last_name'],
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -113,6 +115,11 @@ class OrderProductListCreateAPIView(APIView):
                 in_=openapi.IN_QUERY,
                 type=openapi.TYPE_INTEGER,
                 description='Filter by Order ID',
+            ),
+            openapi.Parameter(
+                name='search',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
             )
         ]
     )
@@ -123,6 +130,15 @@ class OrderProductListCreateAPIView(APIView):
         if filter_order_id is not None:
             get_object_or_404(Order, pk=filter_order_id)
             order_products = order_products.filter(order_id=filter_order_id)
+
+        search = request.query_params.get('search', None)
+        if search is not None:
+            order_products = order_products.filter(
+                Q(order__customer__first_name__icontains=search) |
+                Q(order__customer__last_name__icontains=search) |
+                Q(product__name__icontains=search)
+
+            )
 
         serializer = OrderProductSerializer(order_products, many=True)
         return Response(serializer.data)
@@ -202,6 +218,11 @@ class OrderServiceListCreateAPIView(APIView):
                 in_=openapi.IN_QUERY,
                 type=openapi.TYPE_INTEGER,
                 description='Filter by Order ID',
+            ),
+            openapi.Parameter(
+                name='search',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
             )
         ]
     )
@@ -211,6 +232,14 @@ class OrderServiceListCreateAPIView(APIView):
         filter_order_id = request.query_params.get('order_id', None)
         if filter_order_id is not None:
             order_services = order_services.filter(order_id=filter_order_id)
+
+        search = request.query_params.get('search', None)
+        if search is not None:
+            order_services = order_services.filter(
+                Q(order__customer__first_name__icontains=search) |
+                Q(order__customer__last_name__icontains=search) |
+                Q(service__name__icontains=search)
+            )
 
         serializer = OrderServiceSerializer(order_services, many=True)
         return Response(serializer.data)
