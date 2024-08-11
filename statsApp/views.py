@@ -81,7 +81,7 @@ class OrderListCreateAPIView(ListCreateAPIView):
 
     filter_backends = [OrderingFilter, SearchFilter]
     ordering_fields = '__all__'
-    search_fields = ['customer__first_name', 'customer__last_name'],
+    search_fields = ['customer__first_name', 'customer__last_name']
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -100,6 +100,11 @@ class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET' or self.request.method == 'DELETE':
+            return OrderSerializer
+        return OrderPostSerializer
 
     def get_object(self):
         return get_object_or_404(Order, pk=self.kwargs['pk'], branch=self.request.user.branch)
