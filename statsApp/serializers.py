@@ -51,10 +51,10 @@ class OrderSerializer(serializers.ModelSerializer):
         order = super(OrderSerializer, self).to_representation(instance)
 
         order_products = OrderProduct.objects.filter(order=instance)
-        order_products_serializer = OrderProductSerializer(order_products, many=True)
+        order_products_serializer = OrderProductCascadeSerializer(order_products, many=True)
 
         order_services = OrderService.objects.filter(order=instance)
-        order_services_serializer = OrderServiceSerializer(order_services, many=True)
+        order_services_serializer = OrderServiceCascadeSerializer(order_services, many=True)
 
         order.update(
             {
@@ -92,6 +92,18 @@ class OrderPostSerializer(serializers.ModelSerializer):
         return order
 
 
+class OrderProductCascadeSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = OrderProduct
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
+        }
+
+
 class OrderProductSerializer(serializers.ModelSerializer):
     order = OrderSerializer()
     product = ProductSerializer()
@@ -108,6 +120,18 @@ class OrderProductSerializer(serializers.ModelSerializer):
 class OrderProductPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
+        }
+
+
+class OrderServiceCascadeSerializer(serializers.ModelSerializer):
+    service = ServiceSerializer()
+
+    class Meta:
+        model = OrderService
         fields = '__all__'
 
         extra_kwargs = {
