@@ -51,10 +51,10 @@ class OrderSerializer(serializers.ModelSerializer):
         order = super(OrderSerializer, self).to_representation(instance)
 
         order_products = OrderProduct.objects.filter(order=instance)
-        order_products_serializer = OrderProductPostSerializer(order_products, many=True)
+        order_products_serializer = OrderProductSerializer(order_products, many=True)
 
         order_services = OrderService.objects.filter(order=instance)
-        order_services_serializer = OrderServicePostSerializer(order_services, many=True)
+        order_services_serializer = OrderServiceSerializer(order_services, many=True)
 
         order.update(
             {
