@@ -1,3 +1,4 @@
+from django.db.models import Q
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -317,11 +318,23 @@ class ImportProductListCreateAPIView(APIView):
                 description='Number of results to return per page.',
                 in_=openapi.IN_QUERY,
                 type=openapi.TYPE_INTEGER,
+            ),
+            openapi.Parameter(
+                name='search',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
             )
         ]
     )
     def get(self, request):
         import_products = ImportProduct.objects.filter(branch=request.user.branch).order_by('id')
+
+        search = self.request.query_params.get('search', None)
+        if search is not None:
+            import_products = import_products.filter(
+                Q(product__name__icontains=search) |
+                Q(provider__name__icontains=search)
+            )
 
         filter_provider_id = request.query_params.get('provider_id', None)
         if filter_provider_id is not None:
