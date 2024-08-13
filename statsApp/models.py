@@ -24,7 +24,7 @@ class Expense(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.type.name + " " + str(self.price)
+        return f"{self.description}"
 
 
 class Order(models.Model):

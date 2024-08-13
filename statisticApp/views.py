@@ -94,3 +94,5 @@ class MonthlyTotalsAPIView(APIView):
 
         serializer = MonthlyTotalSerializer(ordered_result)
         return Response(serializer.data)
+
+

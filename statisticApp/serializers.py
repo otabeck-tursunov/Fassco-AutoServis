@@ -29,3 +29,6 @@ class MonthlyTotalSerializer(serializers.Serializer):
     oct = serializers.FloatField()
     nov = serializers.FloatField()
     dec = serializers.FloatField()
+
+
+
