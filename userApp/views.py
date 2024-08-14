@@ -62,6 +62,7 @@ class StaffListCreateView(ListCreateAPIView):
 
 class StaffRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = (RoleIsAdmin,)
+
     queryset = User.objects.filter(
         Q(is_staff=True) | Q(role='Staff')
     )
