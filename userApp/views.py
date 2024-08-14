@@ -7,7 +7,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 
-from .permissions import IsSuperUser
+from .permissions import IsSuperUser, RoleIsAdmin
 from .serializers import *
 from .models import *
 
@@ -16,7 +16,7 @@ class UserListCreateView(APIView):
     permission_classes = (IsSuperUser,)
 
     def get(self, request):
-        users = User.objects.filter(branch=request.user.branch)
+        users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
@@ -25,28 +25,43 @@ class UserListCreateView(APIView):
     )
     def post(self, request):
         serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(branch=request.user.branch)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class UserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def perform_update(self, serializer):
+        serializer.save(branch=self.request.user.branch)
 
 
 class StaffListCreateView(ListCreateAPIView):
-    permission_classes = (IsSuperUser,)
+    permission_classes = (RoleIsAdmin,)
+
     queryset = User.objects.filter(
-        Q(is_staff=True) | Q(role='Staff')
+        Q(is_staff=True) | Q(role='Staff') | Q(role='Admin')
     )
+
     serializer_class = StaffSerializer
     filter_backends = (SearchFilter, OrderingFilter,)
     search_fields = ('username', 'first_name', 'last_name', 'phone_number', 'position')
     ordering_fields = ('username', 'first_name', 'last_name', 'position')
+
+    def get_queryset(self):
+        return self.queryset.filter(branch=self.request.user.branch)
 
     def perform_create(self, serializer):
         serializer.save(role='Staff', branch=self.request.user.branch)
 
 
 class StaffRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsSuperUser,)
+    permission_classes = (RoleIsAdmin,)
     queryset = User.objects.filter(
         Q(is_staff=True) | Q(role='Staff')
     )

@@ -2,6 +2,7 @@ import json
 
 from django.db.models import Sum, F
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -96,3 +97,29 @@ class MonthlyTotalsAPIView(APIView):
         return Response(serializer.data)
 
 
+class StatisticsAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        products = Product.objects.filter(branch=request.user.branch)
+        serializer = ProductSerializer(products, many=True)
+        total_import = 0
+        for product in serializer.data:
+            total_import += product['total_import']
+
+        total_export = 0
+        for product in serializer.data:
+            total_export += product['total_export']
+
+        total_benefit = 0
+        for product in serializer.data:
+            total_benefit += product['total_benefit']
+
+        serializer_result = StatisticSerializer(
+            {
+                'total_import': total_import,
+                'total_export': total_export,
+                'total_benefit': total_benefit
+            }
+        )
+        return Response(serializer_result.data)

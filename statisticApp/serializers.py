@@ -31,4 +31,7 @@ class MonthlyTotalSerializer(serializers.Serializer):
     dec = serializers.FloatField()
 
 
-
+class StatisticSerializer(serializers.Serializer):
+    total_import = serializers.FloatField()
+    total_export = serializers.FloatField()
+    total_benefit = serializers.FloatField()
