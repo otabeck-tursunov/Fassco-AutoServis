@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.i18n import set_language
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -25,4 +26,6 @@ urlpatterns = [
     path('main/', include('mainApp.urls')),
     path('stats/', include('statsApp.urls')),
     path('statistics/', include('statisticApp.urls')),
+
+    path('set_language/', set_language, name='set_language'),
 ]

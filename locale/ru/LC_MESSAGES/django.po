@@ -1,0 +1,273 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-15 20:15+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\AutoServis\settings.py:57 .\AutoServis\settings.py:58
+#: .\AutoServis\settings.py:59
+msgid "Auto Servis"
+msgstr "Автосервис"
+
+#: .\AutoServis\settings.py:60
+msgid "Admin panelga xush kelibsiz!"
+msgstr "Добро пожаловать в админ панель!"
+
+#: .\AutoServis\settings.py:157
+msgid "English"
+msgstr "Английский"
+
+#: .\AutoServis\settings.py:158
+msgid "Uzbek"
+msgstr "Узбекский"
+
+#: .\AutoServis\settings.py:159
+msgid "Russian"
+msgstr "Русский"
+
+#: .\mainApp\apps.py:9
+msgid "Storage"
+msgstr "Склад"
+
+#: .\mainApp\models.py:6 .\mainApp\models.py:48 .\mainApp\models.py:66
+#: .\mainApp\models.py:83 .\mainApp\models.py:123 .\statsApp\models.py:11
+msgid "Name"
+msgstr "Название"
+
+#: .\mainApp\models.py:7 .\mainApp\models.py:29
+msgid "Address"
+msgstr "Адрес"
+
+#: .\mainApp\models.py:8 .\mainApp\models.py:23 .\mainApp\models.py:24
+#: .\mainApp\models.py:67
+msgid "Phone number"
+msgstr "Номер телефона"
+
+#: .\mainApp\models.py:10 .\mainApp\models.py:33 .\mainApp\models.py:55
+#: .\mainApp\models.py:71 .\mainApp\models.py:93 .\mainApp\models.py:112
+#: .\mainApp\models.py:127 .\statsApp\models.py:25 .\statsApp\models.py:44
+#: .\statsApp\models.py:65 .\statsApp\models.py:83
+msgid "Created at"
+msgstr "Дата создания"
+
+#: .\mainApp\models.py:13 .\mainApp\models.py:32 .\mainApp\models.py:53
+#: .\mainApp\models.py:70 .\mainApp\models.py:92 .\mainApp\models.py:111
+#: .\mainApp\models.py:126 .\statsApp\models.py:12 .\statsApp\models.py:29
+#: .\statsApp\models.py:47 .\statsApp\models.py:64 .\statsApp\models.py:82
+msgid "Branch"
+msgstr "Филиал"
+
+#: .\mainApp\models.py:14
+msgid "Branchs"
+msgstr "Филиалы"
+
+#: .\mainApp\models.py:21
+msgid "First name"
+msgstr "Имя"
+
+#: .\mainApp\models.py:22
+msgid "Last name"
+msgstr "Фамилия"
+
+#: .\mainApp\models.py:26
+msgid "Passport serial numbers"
+msgstr "Серийные номера паспортов"
+
+#: .\mainApp\models.py:28
+msgid "Passport serial letters"
+msgstr "Паспортные серийные буквы"
+
+#: .\mainApp\models.py:30 .\mainApp\models.py:68 .\mainApp\models.py:107
+#: .\statsApp\models.py:42
+msgid "Debt"
+msgstr "Задолженность"
+
+#: .\mainApp\models.py:36 .\mainApp\models.py:54 .\statsApp\models.py:46
+msgid "Customer"
+msgstr "Клиент"
+
+#: .\mainApp\models.py:37
+msgid "Customers"
+msgstr "Клиенты"
+
+#: .\mainApp\models.py:47 .\mainApp\models.py:82
+msgid "Code"
+msgstr "Код"
+
+#: .\mainApp\models.py:49
+msgid "Brand"
+msgstr "Бренд"
+
+#: .\mainApp\models.py:50
+msgid "Color"
+msgstr "Цвет"
+
+#: .\mainApp\models.py:51
+msgid "State number"
+msgstr "Государственный номер"
+
+#: .\mainApp\models.py:58
+msgid "Car"
+msgstr "Автомобил"
+
+#: .\mainApp\models.py:59
+msgid "Cars"
+msgstr "Автомобили"
+
+#: .\mainApp\models.py:74 .\mainApp\models.py:91 .\mainApp\models.py:110
+msgid "Provider"
+msgstr "Поставщик"
+
+#: .\mainApp\models.py:75
+msgid "Providers"
+msgstr "Поставщики"
+
+#: .\mainApp\models.py:84 .\mainApp\models.py:104 .\statsApp\models.py:58
+msgid "Amount"
+msgstr "Количество"
+
+#: .\mainApp\models.py:85
+msgid "Minimum amount"
+msgstr "Минимальная количество"
+
+#: .\mainApp\models.py:86
+msgid "Unit"
+msgstr "Единство"
+
+#: .\mainApp\models.py:87 .\mainApp\models.py:105
+msgid "Import price"
+msgstr "Цена импорта"
+
+#: .\mainApp\models.py:88
+msgid "Export price"
+msgstr "Экспортная цена"
+
+#: .\mainApp\models.py:89
+msgid "Max discount"
+msgstr "Максимальная скидка"
+
+#: .\mainApp\models.py:96 .\mainApp\models.py:109 .\statsApp\models.py:63
+msgid "Product"
+msgstr "Товар"
+
+#: .\mainApp\models.py:97
+msgid "Products"
+msgstr "Товары"
+
+#: .\mainApp\models.py:106 .\statsApp\models.py:40 .\statsApp\models.py:60
+#: .\statsApp\models.py:77
+msgid "Total"
+msgstr "Общий"
+
+#: .\mainApp\models.py:115
+msgid "Import product"
+msgstr "Поступления товаров"
+
+#: .\mainApp\models.py:116
+msgid "Import products"
+msgstr "Поступления товаров"
+
+#: .\mainApp\models.py:124 .\statsApp\models.py:24
+msgid "Price"
+msgstr "Цена"
+
+#: .\mainApp\models.py:130 .\statsApp\models.py:80
+msgid "Service"
+msgstr "Услуга"
+
+#: .\mainApp\models.py:131
+msgid "Services"
+msgstr "Услуги"
+
+#: .\statsApp\apps.py:9
+msgid "Commerce"
+msgstr "Торговля"
+
+#: .\statsApp\models.py:15
+msgid "Expense Type"
+msgstr "Тип расходов"
+
+#: .\statsApp\models.py:16
+msgid "Expense Types"
+msgstr "Типы расходов"
+
+#: .\statsApp\models.py:23
+msgid "Description"
+msgstr "Описание"
+
+#: .\statsApp\models.py:27
+msgid "Type"
+msgstr "Тип"
+
+#: .\statsApp\models.py:28
+msgid "User"
+msgstr "Пользователь"
+
+#: .\statsApp\models.py:32
+msgid "Expense"
+msgstr "Расход"
+
+#: .\statsApp\models.py:33
+msgid "Expenses"
+msgstr "Расходы"
+
+#: .\statsApp\models.py:41
+msgid "Paid"
+msgstr "Оплаченный"
+
+#: .\statsApp\models.py:50 .\statsApp\models.py:62 .\statsApp\models.py:79
+msgid "Order"
+msgstr "Заказ"
+
+#: .\statsApp\models.py:51
+msgid "Orders"
+msgstr "Заказы"
+
+#: .\statsApp\models.py:59
+msgid "Discount"
+msgstr "Максимальная скидка"
+
+#: .\statsApp\models.py:68
+msgid "Order Product"
+msgstr "Товар"
+
+#: .\statsApp\models.py:69
+msgid "Order Products"
+msgstr "История товаров"
+
+#: .\statsApp\models.py:76
+msgid "Part"
+msgstr "Часть"
+
+#: .\statsApp\models.py:81
+msgid "Staff"
+msgstr "Сотрудник"
+
+#: .\statsApp\models.py:86
+msgid "Order Service"
+msgstr "Услуга"
+
+#: .\statsApp\models.py:87
+msgid "Order Services"
+msgstr "История обслуживания"
+
+#: .\userApp\apps.py:9
+msgid "Users"
+msgstr "Пользователь"
+
