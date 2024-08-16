@@ -44,6 +44,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name=_('Created at'))
 
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Customer'))
+    car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Car'))
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name=_('Branch'))
 
     class Meta:

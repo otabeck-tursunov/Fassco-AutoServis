@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-15 20:06+0500\n"
+"POT-Creation-Date: 2024-08-16 06:59+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,15 +27,15 @@ msgstr ""
 msgid "Admin panelga xush kelibsiz!"
 msgstr ""
 
-#: .\AutoServis\settings.py:157
+#: .\AutoServis\settings.py:189
 msgid "English"
 msgstr ""
 
-#: .\AutoServis\settings.py:158
+#: .\AutoServis\settings.py:190
 msgid "Uzbek"
 msgstr ""
 
-#: .\AutoServis\settings.py:159
+#: .\AutoServis\settings.py:191
 msgid "Russian"
 msgstr ""
 
@@ -60,14 +60,14 @@ msgstr ""
 #: .\mainApp\models.py:10 .\mainApp\models.py:33 .\mainApp\models.py:55
 #: .\mainApp\models.py:71 .\mainApp\models.py:93 .\mainApp\models.py:112
 #: .\mainApp\models.py:127 .\statsApp\models.py:25 .\statsApp\models.py:44
-#: .\statsApp\models.py:65 .\statsApp\models.py:83
+#: .\statsApp\models.py:66 .\statsApp\models.py:84
 msgid "Created at"
 msgstr ""
 
 #: .\mainApp\models.py:13 .\mainApp\models.py:32 .\mainApp\models.py:53
 #: .\mainApp\models.py:70 .\mainApp\models.py:92 .\mainApp\models.py:111
 #: .\mainApp\models.py:126 .\statsApp\models.py:12 .\statsApp\models.py:29
-#: .\statsApp\models.py:47 .\statsApp\models.py:64 .\statsApp\models.py:82
+#: .\statsApp\models.py:48 .\statsApp\models.py:65 .\statsApp\models.py:83
 msgid "Branch"
 msgstr ""
 
@@ -120,7 +120,7 @@ msgstr ""
 msgid "State number"
 msgstr ""
 
-#: .\mainApp\models.py:58
+#: .\mainApp\models.py:58 .\statsApp\models.py:47
 msgid "Car"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgstr ""
 msgid "Providers"
 msgstr ""
 
-#: .\mainApp\models.py:84 .\mainApp\models.py:104 .\statsApp\models.py:58
+#: .\mainApp\models.py:84 .\mainApp\models.py:104 .\statsApp\models.py:59
 msgid "Amount"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Max discount"
 msgstr ""
 
-#: .\mainApp\models.py:96 .\mainApp\models.py:109 .\statsApp\models.py:63
+#: .\mainApp\models.py:96 .\mainApp\models.py:109 .\statsApp\models.py:64
 msgid "Product"
 msgstr ""
 
@@ -168,8 +168,8 @@ msgstr ""
 msgid "Products"
 msgstr ""
 
-#: .\mainApp\models.py:106 .\statsApp\models.py:40 .\statsApp\models.py:60
-#: .\statsApp\models.py:77
+#: .\mainApp\models.py:106 .\statsApp\models.py:40 .\statsApp\models.py:61
+#: .\statsApp\models.py:78
 msgid "Total"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Price"
 msgstr ""
 
-#: .\mainApp\models.py:130 .\statsApp\models.py:80
+#: .\mainApp\models.py:130 .\statsApp\models.py:81
 msgid "Service"
 msgstr ""
 
@@ -229,38 +229,42 @@ msgstr ""
 msgid "Paid"
 msgstr ""
 
-#: .\statsApp\models.py:50 .\statsApp\models.py:62 .\statsApp\models.py:79
+#: .\statsApp\models.py:51 .\statsApp\models.py:63 .\statsApp\models.py:80
 msgid "Order"
 msgstr ""
 
-#: .\statsApp\models.py:51
+#: .\statsApp\models.py:52
 msgid "Orders"
 msgstr ""
 
-#: .\statsApp\models.py:59
+#: .\statsApp\models.py:60
 msgid "Discount"
 msgstr ""
 
-#: .\statsApp\models.py:68
+#: .\statsApp\models.py:69
 msgid "Order Product"
 msgstr ""
 
-#: .\statsApp\models.py:69
+#: .\statsApp\models.py:70
 msgid "Order Products"
 msgstr ""
 
-#: .\statsApp\models.py:76
+#: .\statsApp\models.py:77
 msgid "Part"
 msgstr ""
 
-#: .\statsApp\models.py:81
+#: .\statsApp\models.py:82
 msgid "Staff"
 msgstr ""
 
-#: .\statsApp\models.py:86
+#: .\statsApp\models.py:87
 msgid "Order Service"
 msgstr ""
 
-#: .\statsApp\models.py:87
+#: .\statsApp\models.py:88
 msgid "Order Services"
+msgstr ""
+
+#: .\userApp\apps.py:9
+msgid "Users"
 msgstr ""
