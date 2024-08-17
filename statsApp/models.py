@@ -37,6 +37,7 @@ class Expense(models.Model):
 
 
 class Order(models.Model):
+    description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
     total = models.FloatField(default=0, verbose_name=_('Total'))
     paid = models.FloatField(default=0, verbose_name=_('Paid'))
     debt = models.FloatField(default=0, verbose_name=_('Debt'))
@@ -45,6 +46,7 @@ class Order(models.Model):
 
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Customer'))
     car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Car'))
+    car_kilometers = models.FloatField(blank=True, null=True, verbose_name=_('Kilometers'))
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name=_('Branch'))
 
     class Meta:
@@ -56,6 +58,7 @@ class Order(models.Model):
 
 
 class OrderProduct(models.Model):
+    description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
     amount = models.FloatField(default=1, verbose_name=_('Amount'))
     discount = models.FloatField(default=0, verbose_name=_('Discount'))
     total = models.FloatField(default=0, verbose_name=_('Total'))
@@ -74,6 +77,7 @@ class OrderProduct(models.Model):
 
 
 class OrderService(models.Model):
+    description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
     part = models.FloatField(default=1, verbose_name=_('Part'))
     total = models.FloatField(default=0, verbose_name=_('Total'))
 

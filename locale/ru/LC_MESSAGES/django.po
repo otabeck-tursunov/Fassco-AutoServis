@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-16 06:59+0500\n"
+"POT-Creation-Date: 2024-08-17 16:33+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,15 +61,15 @@ msgstr "Номер телефона"
 
 #: .\mainApp\models.py:10 .\mainApp\models.py:33 .\mainApp\models.py:55
 #: .\mainApp\models.py:71 .\mainApp\models.py:93 .\mainApp\models.py:112
-#: .\mainApp\models.py:127 .\statsApp\models.py:25 .\statsApp\models.py:44
-#: .\statsApp\models.py:66 .\statsApp\models.py:84
+#: .\mainApp\models.py:127 .\statsApp\models.py:25 .\statsApp\models.py:45
+#: .\statsApp\models.py:69 .\statsApp\models.py:88
 msgid "Created at"
 msgstr "Дата создания"
 
 #: .\mainApp\models.py:13 .\mainApp\models.py:32 .\mainApp\models.py:53
 #: .\mainApp\models.py:70 .\mainApp\models.py:92 .\mainApp\models.py:111
 #: .\mainApp\models.py:126 .\statsApp\models.py:12 .\statsApp\models.py:29
-#: .\statsApp\models.py:48 .\statsApp\models.py:65 .\statsApp\models.py:83
+#: .\statsApp\models.py:50 .\statsApp\models.py:68 .\statsApp\models.py:87
 msgid "Branch"
 msgstr "Филиал"
 
@@ -94,11 +94,11 @@ msgid "Passport serial letters"
 msgstr "Паспортные серийные буквы"
 
 #: .\mainApp\models.py:30 .\mainApp\models.py:68 .\mainApp\models.py:107
-#: .\statsApp\models.py:42
+#: .\statsApp\models.py:43
 msgid "Debt"
 msgstr "Задолженность"
 
-#: .\mainApp\models.py:36 .\mainApp\models.py:54 .\statsApp\models.py:46
+#: .\mainApp\models.py:36 .\mainApp\models.py:54 .\statsApp\models.py:47
 msgid "Customer"
 msgstr "Клиент"
 
@@ -122,7 +122,7 @@ msgstr "Цвет"
 msgid "State number"
 msgstr "Государственный номер"
 
-#: .\mainApp\models.py:58 .\statsApp\models.py:47
+#: .\mainApp\models.py:58 .\statsApp\models.py:48
 msgid "Car"
 msgstr "Автомобил"
 
@@ -138,7 +138,7 @@ msgstr "Поставщик"
 msgid "Providers"
 msgstr "Поставщики"
 
-#: .\mainApp\models.py:84 .\mainApp\models.py:104 .\statsApp\models.py:59
+#: .\mainApp\models.py:84 .\mainApp\models.py:104 .\statsApp\models.py:62
 msgid "Amount"
 msgstr "Количество"
 
@@ -162,7 +162,7 @@ msgstr "Экспортная цена"
 msgid "Max discount"
 msgstr "Максимальная скидка"
 
-#: .\mainApp\models.py:96 .\mainApp\models.py:109 .\statsApp\models.py:64
+#: .\mainApp\models.py:96 .\mainApp\models.py:109 .\statsApp\models.py:67
 msgid "Product"
 msgstr "Товар"
 
@@ -170,8 +170,8 @@ msgstr "Товар"
 msgid "Products"
 msgstr "Товары"
 
-#: .\mainApp\models.py:106 .\statsApp\models.py:40 .\statsApp\models.py:61
-#: .\statsApp\models.py:78
+#: .\mainApp\models.py:106 .\statsApp\models.py:41 .\statsApp\models.py:64
+#: .\statsApp\models.py:82
 msgid "Total"
 msgstr "Общий"
 
@@ -187,7 +187,7 @@ msgstr "Поступления товаров"
 msgid "Price"
 msgstr "Цена"
 
-#: .\mainApp\models.py:130 .\statsApp\models.py:81
+#: .\mainApp\models.py:130 .\statsApp\models.py:85
 msgid "Service"
 msgstr "Услуга"
 
@@ -207,7 +207,8 @@ msgstr "Тип расходов"
 msgid "Expense Types"
 msgstr "Типы расходов"
 
-#: .\statsApp\models.py:23
+#: .\statsApp\models.py:23 .\statsApp\models.py:40 .\statsApp\models.py:61
+#: .\statsApp\models.py:80
 msgid "Description"
 msgstr "Описание"
 
@@ -227,43 +228,47 @@ msgstr "Расход"
 msgid "Expenses"
 msgstr "Расходы"
 
-#: .\statsApp\models.py:41
+#: .\statsApp\models.py:42
 msgid "Paid"
 msgstr "Оплаченный"
 
-#: .\statsApp\models.py:51 .\statsApp\models.py:63 .\statsApp\models.py:80
+#: .\statsApp\models.py:49
+msgid "Kilometers"
+msgstr "Пробег"
+
+#: .\statsApp\models.py:53 .\statsApp\models.py:66 .\statsApp\models.py:84
 msgid "Order"
 msgstr "Заказ"
 
-#: .\statsApp\models.py:52
+#: .\statsApp\models.py:54
 msgid "Orders"
 msgstr "Заказы"
 
-#: .\statsApp\models.py:60
+#: .\statsApp\models.py:63
 msgid "Discount"
 msgstr "Максимальная скидка"
 
-#: .\statsApp\models.py:69
+#: .\statsApp\models.py:72
 msgid "Order Product"
 msgstr "Товар"
 
-#: .\statsApp\models.py:70
+#: .\statsApp\models.py:73
 msgid "Order Products"
 msgstr "История товаров"
 
-#: .\statsApp\models.py:77
+#: .\statsApp\models.py:81
 msgid "Part"
 msgstr "Часть"
 
-#: .\statsApp\models.py:82
+#: .\statsApp\models.py:86
 msgid "Staff"
 msgstr "Сотрудник"
 
-#: .\statsApp\models.py:87
+#: .\statsApp\models.py:91
 msgid "Order Service"
 msgstr "Услуга"
 
-#: .\statsApp\models.py:88
+#: .\statsApp\models.py:92
 msgid "Order Services"
 msgstr "История обслуживания"
 
