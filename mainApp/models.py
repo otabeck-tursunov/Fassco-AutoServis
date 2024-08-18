@@ -101,6 +101,7 @@ class Product(models.Model):
 
 
 class ImportProduct(models.Model):
+    description = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Description'))
     amount = models.FloatField(default=0, verbose_name=_('Amount'))
     import_price = models.FloatField(blank=True, null=True, verbose_name=_('Import price'))
     total = models.FloatField(default=0, verbose_name=_('Total'))
