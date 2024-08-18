@@ -1,7 +1,7 @@
 from django.db.models import Sum
 from rest_framework import serializers
 
-from statsApp.models import OrderProduct
+from statsApp.models import *
 from .models import *
 
 
@@ -21,6 +21,19 @@ class CustomerSerializer(serializers.ModelSerializer):
         }
 
 
+class OrderCascadeSerializer(serializers.ModelSerializer):
+    customer = CustomerSerializer()
+    car = None
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
+        }
+
+
 class CarSerializer(serializers.ModelSerializer):
     customer = CustomerSerializer()
 
@@ -30,6 +43,27 @@ class CarSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {
             'branch': {'read_only': True}
+        }
+
+    def to_representation(self, instance):
+        car = super(CarSerializer, self).to_representation(instance)
+
+        orders = Order.objects.filter(car=instance)
+        serializer = OrderCascadeSerializer(orders, many=True)
+
+        car['orders'] = serializer.data
+        return car
+
+
+class CarCascadeSerializer(serializers.ModelSerializer):
+    customer = CustomerSerializer()
+
+    class Meta:
+        model = Car
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
         }
 
 
