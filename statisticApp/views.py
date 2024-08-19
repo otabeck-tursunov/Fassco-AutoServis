@@ -2,6 +2,8 @@ import json
 
 from django.db.models import Sum, F
 from django.shortcuts import get_object_or_404
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -129,6 +131,22 @@ class StatisticsAPIView(APIView):
 class ExpensesStatisticsAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name='start_date',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
+                description='Filter by Start Date',
+            ),
+            openapi.Parameter(
+                name='end_date',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_STRING,
+                description='Filter by End Date',
+            ),
+        ]
+    )
     def get(self, request):
         expense_types = ExpenseType.objects.filter(branch=request.user.branch)
 
