@@ -35,3 +35,8 @@ class StatisticSerializer(serializers.Serializer):
     total_import = serializers.FloatField()
     total_export = serializers.FloatField()
     total_benefit = serializers.FloatField()
+
+
+class ExpenseTypeTotalSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    total_price = serializers.FloatField(min_value=0)

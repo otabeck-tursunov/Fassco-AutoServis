@@ -2,12 +2,13 @@ import json
 
 from django.db.models import Sum, F
 from django.shortcuts import get_object_or_404
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mainApp.models import Product, Customer
-from statsApp.models import OrderProduct, Order
+from statsApp.models import OrderProduct, Order, Expense, ExpenseType
 from statsApp.serializers import OrderProductSerializer
 from .serializers import *
 
@@ -123,3 +124,29 @@ class StatisticsAPIView(APIView):
             }
         )
         return Response(serializer_result.data)
+
+
+class ExpensesStatisticsAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        expense_types = ExpenseType.objects.filter(branch=request.user.branch)
+
+        start_date = request.query_params.get('start_date', None)
+        end_date = request.query_params.get('end_date', None)
+
+        expenses = None
+        if start_date is not None or end_date is not None:
+            if start_date is not None:
+                expenses = Expense.objects.filter(created_at__gte=start_date, branch=request.user.branch)
+            if end_date is not None:
+                expenses = Expense.objects.filter(created_at__lte=end_date, branch=request.user.branch)
+        else:
+            expenses = Expense.objects.filter(branch=request.user.branch)
+
+        result = {}
+        for expense_type in expense_types:
+            total_price = expenses.filter(type=expense_type).aggregate(Sum('price'))['price__sum'] or 0
+            result[expense_type.name] = total_price
+
+        return Response(result, status=status.HTTP_200_OK)

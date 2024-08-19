@@ -93,3 +93,7 @@ class OrderService(models.Model):
 
     def __str__(self):
         return str(self.order) + ": " + str(self.service)
+
+
+
+
