@@ -368,6 +368,10 @@ class ImportProductListCreateAPIView(APIView):
             product.provider = serializer.validated_data['provider']
             product.save()
 
+            provider = Provider.objects.get(pk=serializer.validated_data['provider'].id)
+            provider.debt += serializer.validated_data['debt']
+            provider.save()
+
             total = serializer.validated_data['amount'] * serializer.validated_data['import_price']
             serializer.save(branch=request.user.branch, total=total)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -388,6 +392,20 @@ class ImportProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     def get_object(self):
         queryset = self.queryset.filter(branch=self.request.user.branch)
         return get_object_or_404(queryset, pk=self.kwargs['pk'])
+
+    def perform_update(self, serializer):
+        instance = self.get_object()
+
+        old_debt = instance.debt
+
+        serializer.save()
+        new_debt = serializer.validated_data.get('debt', instance.debt)
+
+        debt_difference = new_debt - old_debt
+
+        provider = instance.provider
+        provider.debt += debt_difference
+        provider.save()
 
 
 class ServiceListCreateAPIView(ListCreateAPIView):
