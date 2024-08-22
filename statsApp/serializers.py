@@ -46,6 +46,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {
             'branch': {'read_only': True},
+            'car_kilometers': {'required': False},
         }
 
     def to_representation(self, instance):
