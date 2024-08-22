@@ -135,26 +135,26 @@ class Service(models.Model):
         return self.name
 
 
-class IProvider(models.Model):
-    provider = models.ForeignKey(Provider, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Provider'))
-    total = models.FloatField(default=0, verbose_name=_('Total'))
-    debt = models.FloatField(default=0, verbose_name=_('Debt'))
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name=_('Branch'))
-
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
-
-    class Meta:
-        verbose_name = _('Import from provider')
-        verbose_name_plural = _('Import from providers')
-
-    def __str__(self):
-        return f"{self.provider} {self.total}"
-
-
-class IProduct(models.Model):
-    iProvider = models.ForeignKey(IProvider, on_delete=models.CASCADE, verbose_name=_('Provider'))
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name=_('Product'))
-    amount = models.FloatField(default=0, verbose_name=_('Amount'))
-
-    def __str__(self):
-        return f"{self.product} {self.amount}"
+# class IProvider(models.Model):
+#     provider = models.ForeignKey(Provider, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Provider'))
+#     total = models.FloatField(default=0, verbose_name=_('Total'))
+#     debt = models.FloatField(default=0, verbose_name=_('Debt'))
+#     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name=_('Branch'))
+#
+#     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+#
+#     class Meta:
+#         verbose_name = _('Import from provider')
+#         verbose_name_plural = _('Import from providers')
+#
+#     def __str__(self):
+#         return f"{self.provider} {self.total}"
+#
+#
+# class IProduct(models.Model):
+#     iProvider = models.ForeignKey(IProvider, on_delete=models.CASCADE, verbose_name=_('Provider'))
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name=_('Product'))
+#     amount = models.FloatField(default=0, verbose_name=_('Amount'))
+#
+#     def __str__(self):
+#         return f"{self.product} {self.amount}"
