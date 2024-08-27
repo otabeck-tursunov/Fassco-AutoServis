@@ -6,7 +6,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import *
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from .serializers import *
@@ -59,7 +59,7 @@ class ExpenseListCreateView(ListCreateAPIView):
 
 
 class ExpenseRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated, ]
 
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
@@ -89,7 +89,13 @@ class OrderListCreateAPIView(ListCreateAPIView):
         return OrderPostSerializer
 
     def perform_create(self, serializer):
-        serializer.save(branch=self.request.user.branch)
+        # Save the order
+        order = serializer.save(branch=self.request.user.branch)
+
+        # Update the customer's debt by adding the order's debt
+        if order.customer:
+            order.customer.debt += order.debt
+            order.customer.save()
 
     def get_queryset(self):
         return self.queryset.filter(branch=self.request.user.branch)
@@ -108,6 +114,22 @@ class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(Order, pk=self.kwargs['pk'], branch=self.request.user.branch)
+
+    def perform_update(self, serializer):
+        # Get the current order instance
+        order = self.get_object()
+
+        # Store the previous debt value before updating
+        previous_debt = order.debt
+
+        # Update the order
+        updated_order = serializer.save()
+
+        # Update customer's debt based on the change in order debt
+        if updated_order.customer:
+            debt_difference = updated_order.debt - previous_debt
+            updated_order.customer.debt += debt_difference
+            updated_order.customer.save()
 
 
 class OrderProductListCreateAPIView(APIView):

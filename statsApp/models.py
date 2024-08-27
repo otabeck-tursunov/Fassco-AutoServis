@@ -1,4 +1,6 @@
 from datetime import timezone
+from wsgiref.validate import validator
+
 from django.utils.translation import gettext_lazy as _
 
 from django.core.validators import MinValueValidator
@@ -34,6 +36,7 @@ class Expense(models.Model):
 
     def __str__(self):
         return f"{self.description}"
+
 
 
 class Order(models.Model):
@@ -93,7 +96,3 @@ class OrderService(models.Model):
 
     def __str__(self):
         return str(self.order) + ": " + str(self.service)
-
-
-
-
