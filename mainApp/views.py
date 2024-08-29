@@ -4,7 +4,6 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import *
-from rest_framework.permissions import *
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,21 +15,21 @@ from AutoServis.paginations import *
 
 
 class BranchesListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Branch.objects.all().order_by('id')
     serializer_class = BranchSerializer
 
 
 class BranchRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
 
 
 class CustomerListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Customer.objects.all().order_by('id')
     serializer_class = CustomerSerializer
@@ -66,7 +65,7 @@ class CustomerListCreateAPIView(ListCreateAPIView):
 
 
 class CustomerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
@@ -77,7 +76,7 @@ class CustomerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class CarListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Car.objects.all().order_by('id')
     serializer_class = CarSerializer
@@ -138,7 +137,7 @@ class CarListCreateAPIView(ListCreateAPIView):
 
 
 class CarRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Car.objects.all()
     serializer_class = CarSerializer
@@ -155,7 +154,7 @@ class CarRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class ProviderListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Provider.objects.all().order_by('id')
     serializer_class = ProviderSerializer
@@ -204,7 +203,7 @@ class ProviderListCreateAPIView(ListCreateAPIView):
 
 
 class ProviderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Provider.objects.all()
     serializer_class = ProviderSerializer
@@ -215,7 +214,7 @@ class ProviderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class ProductListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
@@ -268,7 +267,7 @@ class ProductListCreateAPIView(ListCreateAPIView):
 
 
 class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -284,7 +283,7 @@ class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class ImportProductListCreateAPIView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
     pagination_class = CustomPagination
 
     @swagger_auto_schema(
@@ -379,7 +378,7 @@ class ImportProductListCreateAPIView(APIView):
 
 
 class ImportProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = ImportProduct.objects.all()
     serializer_class = ImportProductSerializer
@@ -409,7 +408,7 @@ class ImportProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class ServiceListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Service.objects.all().order_by('id')
     serializer_class = ServiceSerializer
@@ -443,7 +442,7 @@ class ServiceListCreateAPIView(ListCreateAPIView):
 
 
 class ServiceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer

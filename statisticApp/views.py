@@ -1,17 +1,17 @@
-import json
-
-from django.db.models import Sum, F
 from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
+from django.utils import timezone
 from rest_framework.views import APIView
+from rest_framework.response import Response
+import calendar
 
-from mainApp.models import Product, Customer
+from mainApp.models import *
 from statsApp.models import OrderProduct, Order, Expense, ExpenseType
-from statsApp.serializers import OrderProductSerializer
+from userApp.permissions import IsStaffStatus
 from .serializers import *
 
 
@@ -56,14 +56,6 @@ class TopCustomersAPIView(APIView):
         return Response(serializer.data)
 
 
-from django.db.models import Sum
-from django.db.models.functions import TruncMonth
-from django.utils import timezone
-from rest_framework.views import APIView
-from rest_framework.response import Response
-import calendar
-
-
 class MonthlyTotalsAPIView(APIView):
     def get(self, request):
         # Hozirgi sana va bir yil oldingi sanani olish
@@ -101,7 +93,7 @@ class MonthlyTotalsAPIView(APIView):
 
 
 class StatisticsAPIView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     def get(self, request):
         products = Product.objects.filter(branch=request.user.branch)
@@ -129,7 +121,7 @@ class StatisticsAPIView(APIView):
 
 
 class ExpensesStatisticsAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsStaffStatus]
 
     @swagger_auto_schema(
         manual_parameters=[

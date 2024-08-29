@@ -1,11 +1,13 @@
 from rest_framework.permissions import BasePermission
 
 
-class IsSuperUser(BasePermission):
+class IsSuperStatus(BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_superuser
+        return request.user.role == "SuperStatus" or request.user.is_superuser
 
 
-class RoleIsAdmin(BasePermission):
+class IsStaffStatus(BasePermission):
     def has_permission(self, request, view):
-        return request.user.role == "Admin" or request.user.is_superuser
+        if request.user.is_anonymous:
+            return False
+        return request.user.role == "Staff" and request.user.is_staff

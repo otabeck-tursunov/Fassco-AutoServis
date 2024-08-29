@@ -6,15 +6,15 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import *
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
+from userApp.permissions import IsStaffStatus
 from .serializers import *
 from .models import *
 
 
 class ExpenseTypeListCreateView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = ExpenseType.objects.all().order_by('id')
     serializer_class = ExpenseTypeSerializer
@@ -27,7 +27,7 @@ class ExpenseTypeListCreateView(ListCreateAPIView):
 
 
 class ExpenseTypeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = ExpenseType.objects.all()
     serializer_class = ExpenseTypeSerializer
@@ -37,7 +37,7 @@ class ExpenseTypeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 
 
 class ExpenseListCreateView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Expense.objects.all().order_by('id')
     serializer_class = ExpenseSerializer
@@ -59,7 +59,7 @@ class ExpenseListCreateView(ListCreateAPIView):
 
 
 class ExpenseRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsStaffStatus, ]
 
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
@@ -74,7 +74,7 @@ class ExpenseRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 
 
 class OrderListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Order.objects.all().order_by('id')
     serializer_class = OrderSerializer
@@ -102,7 +102,7 @@ class OrderListCreateAPIView(ListCreateAPIView):
 
 
 class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -133,7 +133,7 @@ class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class OrderProductListCreateAPIView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -210,7 +210,7 @@ class OrderProductListCreateAPIView(APIView):
 
 
 class OrderProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = OrderProduct.objects.all()
     serializer_class = OrderProductSerializer
@@ -236,7 +236,7 @@ class OrderProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class OrderServiceListCreateAPIView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -290,7 +290,7 @@ class OrderServiceListCreateAPIView(APIView):
 
 
 class OrderServiceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsStaffStatus,)
 
     queryset = OrderService.objects.all()
     serializer_class = OrderServiceSerializer

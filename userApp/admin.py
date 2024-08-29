@@ -26,12 +26,18 @@ class CustomUserAdmin(UserAdmin):
                  'role',
                  'position',
                  'is_superuser',
+                 'is_staff',
                  'last_login',
                  'date_joined',
              )
          }
          ),
     )
+
+    list_display = ('id', 'username', 'first_name', 'last_name', 'phone_number', 'branch', 'role', 'position', 'is_staff')
+    list_display_links = ('id', 'username')
+    search_fields = ('username', 'first_name', 'last_name', 'phone_number', 'branch', 'role', 'position')
+
 
 
 admin.site.register(User, CustomUserAdmin)

@@ -11,10 +11,7 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view()),
     path('token-refresh/', TokenRefreshView.as_view()),
 
-    path('', UserListCreateView.as_view()),
-    path('me/', UserRetrieveUpdateDestroyAPIView.as_view()),
-
-    path('staff/', StaffListCreateView.as_view()),
-    path('staff/<int:pk>/', StaffRetrieveUpdateDestroyAPIView.as_view()),
+    path('managers/', ManagerListCreateAPIView.as_view()),
+    path('managers/<int:pk>/', ManagerRetrieveUpdateDestroyAPIView.as_view()),
 
 ]
