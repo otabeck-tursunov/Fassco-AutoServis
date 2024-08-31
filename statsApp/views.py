@@ -97,6 +97,11 @@ class OrderListCreateAPIView(ListCreateAPIView):
             order.customer.debt += order.debt
             order.customer.save()
 
+        if order.manager:
+            order.manager.balance += order.total * order.manager.part
+            order.manager.save()
+
+
     def get_queryset(self):
         return self.queryset.filter(branch=self.request.user.branch)
 
@@ -121,6 +126,7 @@ class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
         # Store the previous debt value before updating
         previous_debt = order.debt
+        previous_total = order.total
 
         # Update the order
         updated_order = serializer.save()
@@ -130,6 +136,25 @@ class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             debt_difference = updated_order.debt - previous_debt
             updated_order.customer.debt += debt_difference
             updated_order.customer.save()
+
+        if updated_order.manager:
+            total_difference = updated_order.total - previous_total
+            updated_order.manager.balance += total_difference
+            updated_order.manager.save()
+
+    def perform_destroy(self, instance):
+        instance.delete()
+
+        if instance.manager:
+            instance.manager.balance -= instance.total * instance.manager.part
+            instance.manager.save()
+
+        if instance.consumer:
+            instance.consumer.debt -= instance.debt
+
+
+
+
 
 
 class OrderProductListCreateAPIView(APIView):

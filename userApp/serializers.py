@@ -36,8 +36,7 @@ class StaffPostSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        staff = User(**validated_data)
-        staff.save(role='Staff')
+        staff = User.objects.create_user(**validated_data)
         return staff
 
 
@@ -66,12 +65,20 @@ class ManagerPostSerializer(serializers.ModelSerializer):
             'password': {'write_only': True, 'min_length': 5, 'max_length': 10},
         }
 
+    def create(self, validated_data):
+        manager = User.objects.create_user(**validated_data)
+        return manager
+
 
 class WorkerSerializer(ManagerSerializer):
     def create(self, validated_data):
         worker = User(**validated_data)
         worker.save(role='Worker')
         return worker
+
+
+class WorkerPostSerializer(ManagerPostSerializer):
+    pass
 
 # class UserSerializer(serializers.ModelSerializer):
 #     class Meta:

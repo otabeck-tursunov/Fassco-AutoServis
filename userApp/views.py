@@ -40,6 +40,79 @@ class ManagerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         serializer.save(role='Manager', is_staff=True, branch=self.request.user.branch)
 
+
+class WorkerListCreateAPIView(ListCreateAPIView):
+    permission_classes = (IsStaffStatus,)
+
+    queryset = User.objects.filter(role='Worker')
+    serializer_class = WorkerSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return WorkerSerializer
+        return WorkerPostSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(branch=self.request.user.branch)
+
+    def perform_create(self, serializer):
+        serializer.save(role='Worker', is_staff=True, branch=self.request.user.branch)
+
+
+class WorkerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsStaffStatus]
+
+    queryset = User.objects.filter(role='Worker')
+    serializer_class = WorkerSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return WorkerSerializer
+        return WorkerPostSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(branch=self.request.user.branch)
+
+    def perform_update(self, serializer):
+        serializer.save(role='Worker', is_staff=True, branch=self.request.user.branch)
+
+
+class StaffListCreateAPIView(ListCreateAPIView):
+    permission_classes = (IsStaffStatus,)
+
+    queryset = User.objects.filter(role='Staff')
+    serializer_class = StaffSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return StaffSerializer
+        return StaffPostSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(branch=self.request.user.branch)
+
+    def perform_create(self, serializer):
+        serializer.save(role='Staff', is_staff=True, branch=self.request.user.branch)
+
+
+class StaffRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsStaffStatus]
+
+    queryset = User.objects.filter(role='Staff')
+    serializer_class = StaffSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return StaffSerializer
+        return StaffPostSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(branch=self.request.user.branch)
+
+    def perform_update(self, serializer):
+        serializer.save(role='Staff', is_staff=True, branch=self.request.user.branch)
+
+
 # class UserListCreateView(APIView):
 #     permission_classes = (IsSuperStatus,)
 #

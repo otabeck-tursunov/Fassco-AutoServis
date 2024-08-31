@@ -52,6 +52,8 @@ class Order(models.Model):
     car_kilometers = models.FloatField(blank=True, null=True, verbose_name=_('Kilometers'))
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name=_('Branch'))
 
+    manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Manager'))
+
     class Meta:
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')

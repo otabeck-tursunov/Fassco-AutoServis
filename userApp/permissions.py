@@ -10,4 +10,4 @@ class IsStaffStatus(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_anonymous:
             return False
-        return request.user.role == "Staff" and request.user.is_staff
+        return (request.user.role == "Staff" and request.user.is_staff) or request.user.is_superuser
