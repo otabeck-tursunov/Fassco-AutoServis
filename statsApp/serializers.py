@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from mainApp.serializers import *
+from userApp.serializers import ManagerSerializer
 from .models import *
 
 
@@ -46,7 +47,6 @@ class OrderSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {
             'branch': {'read_only': True},
-            'car_kilometers': {'required': False},
         }
 
     def to_representation(self, instance):
@@ -157,6 +157,28 @@ class OrderServiceSerializer(serializers.ModelSerializer):
 class OrderServicePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderService
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
+        }
+
+
+class SalarySerializer(serializers.ModelSerializer):
+    employee = ManagerSerializer
+
+    class Meta:
+        model = Salary
+        fields = '__all__'
+
+        extra_kwargs = {
+            'branch': {'read_only': True},
+        }
+
+
+class SalaryPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Salary
         fields = '__all__'
 
         extra_kwargs = {

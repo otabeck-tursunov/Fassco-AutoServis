@@ -101,6 +101,9 @@ class OrderListCreateAPIView(ListCreateAPIView):
             order.manager.balance += order.total * order.manager.part
             order.manager.save()
 
+        if order.branch:
+            order.branch.balance += order.total
+            order.branch.save()
 
     def get_queryset(self):
         return self.queryset.filter(branch=self.request.user.branch)
@@ -139,8 +142,13 @@ class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
         if updated_order.manager:
             total_difference = updated_order.total - previous_total
-            updated_order.manager.balance += total_difference
+            updated_order.manager.balance += total_difference * updated_order.manager.part
             updated_order.manager.save()
+
+        if updated_order.branch:
+            total_difference = updated_order.total - previous_total
+            updated_order.branch.balance += total_difference
+            updated_order.branch.save()
 
     def perform_destroy(self, instance):
         instance.delete()
@@ -152,9 +160,8 @@ class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if instance.consumer:
             instance.consumer.debt -= instance.debt
 
-
-
-
+        if instance.branch:
+            instance.branch.balance -= instance.total
 
 
 class OrderProductListCreateAPIView(APIView):
@@ -304,10 +311,14 @@ class OrderServiceListCreateAPIView(APIView):
         if serializer.is_valid():
             order = get_object_or_404(Order, id=serializer.validated_data['order'].id)
             service = get_object_or_404(Service, id=serializer.validated_data['service'].id)
+            worker = get_object_or_404(User, id=serializer.validated_data['worker'].id)
 
             total = service.price * serializer.validated_data.get('part')
             order.total += total
             order.save()
+
+            worker.balance += total
+            worker.save()
 
             serializer.save(branch=self.request.user.branch, total=total)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -330,7 +341,45 @@ class OrderServiceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
         order.total -= instance.total
         order.save()
+
+        worker = instance.worker
+        if worker is not None:
+            worker.balance -= instance.total
+            worker.save()
+
         instance.delete()
+
+    def perform_update(self, serializer):
+        order_service = self.get_object()
+
+        previous_total = order_service.total
+
+        updated_product_service = serializer.save()
+
+        if updated_product_service.worker:
+            total_difference = updated_product_service.total - previous_total
+            updated_product_service.worker.balance += total_difference
+            updated_product_service.worker.save()
+
+
 
     def get_object(self):
         return get_object_or_404(OrderService, pk=self.kwargs['pk'], branch=self.request.user.branch)
+
+
+class SalaryListCreateAPIView(ListCreateAPIView):
+    permission_classes = (IsStaffStatus,)
+
+    queryset = Salary.objects.all()
+    serializer_class = SalarySerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return SalarySerializer
+        return SalaryPostSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(branch=self.request.user.branch, employee__role__in=['Staff', 'Manager', 'Worker'])
+
+    def perform_create(self, serializer):
+        return serializer.save(branch=self.request.user.branch)

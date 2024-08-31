@@ -1,8 +1,12 @@
 from rest_framework import serializers
+
+from mainApp.serializers import BranchSerializer
 from .models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
+    branch = BranchSerializer()
+
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'first_name', 'last_name', 'phone_number', 'branch', 'role', 'position',

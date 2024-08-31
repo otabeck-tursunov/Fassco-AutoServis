@@ -1,4 +1,8 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from django.template.context_processors import request
+from drf_yasg.openapi import Response
+from rest_framework import status
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from .permissions import *
 from .serializers import *
@@ -35,7 +39,9 @@ class ManagerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return ManagerPostSerializer
 
     def get_queryset(self):
-        return self.queryset.filter(branch=self.request.user.branch)
+        if self.request.user.is_authenticated:
+            return self.queryset.filter(branch=self.request.user.branch)
+        return Response('Unauthorized', status=status.HTTP_401_UNAUTHORIZED)
 
     def perform_update(self, serializer):
         serializer.save(role='Manager', is_staff=True, branch=self.request.user.branch)
@@ -71,7 +77,9 @@ class WorkerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return WorkerPostSerializer
 
     def get_queryset(self):
-        return self.queryset.filter(branch=self.request.user.branch)
+        if self.request.user.is_authenticated:
+            return self.queryset.filter(branch=self.request.user.branch)
+        return Response("Unauthorized!", status=status.HTTP_401_UNAUTHORIZED)
 
     def perform_update(self, serializer):
         serializer.save(role='Worker', is_staff=True, branch=self.request.user.branch)
@@ -107,11 +115,22 @@ class StaffRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return StaffPostSerializer
 
     def get_queryset(self):
-        return self.queryset.filter(branch=self.request.user.branch)
+        if self.request.user.is_authenticated:
+            return self.queryset.filter(branch=self.request.user.branch)
+        return Response("Unauthorized!", status=status.HTTP_401_UNAUTHORIZED)
 
     def perform_update(self, serializer):
         serializer.save(role='Staff', is_staff=True, branch=self.request.user.branch)
 
+
+class GetMeRetrieveAPIView(RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
 
 # class UserListCreateView(APIView):
 #     permission_classes = (IsSuperStatus,)

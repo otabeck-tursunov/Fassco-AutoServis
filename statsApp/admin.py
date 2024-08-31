@@ -34,8 +34,13 @@ class OrderProductAdmin(admin.ModelAdmin):
 
 
 class OrderServiceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'service', 'total', 'part', 'order', 'staff', 'branch', 'created_at')
+    list_display = ('id', 'service', 'total', 'part', 'order', 'worker', 'branch', 'created_at')
     list_display_links = ('id', 'service')
+
+
+class SalaryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'employee', 'amount', 'branch', 'created_at', 'description')
+    list_display_links = ('id', 'employee')
 
 
 admin.site.register(ExpenseType, ExpenseTypeAdmin)
@@ -43,3 +48,4 @@ admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderProduct, OrderProductAdmin)
 admin.site.register(OrderService, OrderServiceAdmin)
+admin.site.register(Salary, SalaryAdmin)

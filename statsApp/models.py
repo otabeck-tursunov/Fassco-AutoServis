@@ -49,7 +49,9 @@ class Order(models.Model):
 
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Customer'))
     car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Car'))
-    car_kilometers = models.FloatField(blank=True, null=True, verbose_name=_('Kilometers'))
+    car_kilometers_odo = models.FloatField(blank=True, null=True, verbose_name=_('Kilometers ODO'))
+    car_kilometers_hev = models.FloatField(blank=True, null=True, verbose_name=_('Kilometers HEV'))
+    car_kilometers_ev = models.FloatField(blank=True, null=True, verbose_name=_('Kilometers EV'))
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name=_('Branch'))
 
     manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Manager'))
@@ -88,7 +90,7 @@ class OrderService(models.Model):
 
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Order'))
     service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Service'))
-    staff = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Staff'))
+    worker = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Staff'))
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name=_('Branch'))
     created_at = models.DateField(auto_now_add=True, blank=True, null=True, verbose_name=_('Created at'))
 
@@ -98,3 +100,17 @@ class OrderService(models.Model):
 
     def __str__(self):
         return str(self.order) + ": " + str(self.service)
+
+
+class Salary(models.Model):
+    description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
+    amount = models.FloatField(verbose_name=_('Amount'))
+    employee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Employee'))
+
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name=_('Branch'))
+    created_at = models.DateField(auto_now_add=True, verbose_name=_('Created at'))
+
+    class Meta:
+        verbose_name = _('Salary')
+        verbose_name_plural = _('Salaries')
+

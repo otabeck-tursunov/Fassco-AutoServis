@@ -16,4 +16,7 @@ urlpatterns = [
 
     path('order-services/', OrderServiceListCreateAPIView.as_view()),
     path('order-services/<int:pk>/', OrderServiceRetrieveUpdateDestroyAPIView.as_view()),
+
+    path('salaries/', SalaryListCreateAPIView.as_view()),
+
 ]
