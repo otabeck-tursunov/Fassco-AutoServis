@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from mainApp.serializers import *
-from userApp.serializers import ManagerSerializer
+from userApp.serializers import ManagerSerializer, WorkerSerializer
 from .models import *
 
 
@@ -144,6 +144,7 @@ class OrderServiceCascadeSerializer(serializers.ModelSerializer):
 class OrderServiceSerializer(serializers.ModelSerializer):
     order = OrderSerializer()
     service = ServiceSerializer()
+    worker = WorkerSerializer()
 
     class Meta:
         model = OrderService
