@@ -157,8 +157,8 @@ class OrderRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             instance.manager.balance -= instance.total * instance.manager.part
             instance.manager.save()
 
-        if instance.consumer:
-            instance.consumer.debt -= instance.debt
+        if instance.customer:
+            instance.customer.debt -= instance.debt
 
         if instance.branch:
             instance.branch.balance -= instance.total
@@ -361,8 +361,6 @@ class OrderServiceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             updated_product_service.worker.balance += total_difference
             updated_product_service.worker.save()
 
-
-
     def get_object(self):
         return get_object_or_404(OrderService, pk=self.kwargs['pk'], branch=self.request.user.branch)
 
@@ -379,7 +377,21 @@ class SalaryListCreateAPIView(ListCreateAPIView):
         return SalaryPostSerializer
 
     def get_queryset(self):
-        return self.queryset.filter(branch=self.request.user.branch, employee__role__in=['Staff', 'Manager', 'Worker'])
+        return self.queryset.filter(branch=self.request.user.branch, employee__role__in=['Staff', 'Manager', 'Worker']).order_by('id')
 
     def perform_create(self, serializer):
-        return serializer.save(branch=self.request.user.branch)
+        employee = serializer.validated_data['employee']
+        salary_amount = serializer.validated_data['amount']
+
+        # Check if employee's balance is greater than or equal to the salary amount
+        if employee.balance < salary_amount:
+            return Response(
+                {"detail": "The employee's balance is insufficient to add this salary."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        employee.balance -= salary_amount
+        employee.save()
+
+        # If validation passes, save the salary data
+        serializer.save(branch=self.request.user.branch)

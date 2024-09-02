@@ -25,6 +25,8 @@ class CustomUserAdmin(UserAdmin):
                  'branch',
                  'role',
                  'position',
+                 'part',
+                 'balance',
                  'is_superuser',
                  'is_staff',
                  'last_login',
