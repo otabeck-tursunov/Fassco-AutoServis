@@ -151,6 +151,24 @@ class UserListCreateAPIView(ListCreateAPIView):
         serializer.save(is_staff=True, branch=self.request.user.branch)
 
 
+class UserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsStaffStatus,)
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(role__in=['Manager', 'Worker', 'Staff']).order_by('id')
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return UserSerializer
+        return UserPostSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(branch=self.request.user.branch)
+
+    def perform_update(self, serializer):
+        serializer.save(is_staff=True, branch=self.request.user.branch)
+
+
+
 # class UserListCreateView(APIView):
 #     permission_classes = (IsSuperStatus,)
 #
