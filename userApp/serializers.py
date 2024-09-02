@@ -9,8 +9,23 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'phone_number', 'branch', 'role', 'position',
-                  'is_superuser', 'date_joined')
+        fields = (
+            'id', 'username', 'password', 'first_name', 'last_name', 'phone_number', 'branch', 'role', 'position',
+            'part', 'balance', 'is_superuser', 'date_joined'
+        )
+
+        extra_kwargs = {
+            'password': {'write_only': True, 'min_length': 5, 'max_length': 10},
+            'branch': {'read_only': True},
+        }
+
+class UserPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id', 'username', 'password', 'first_name', 'last_name', 'phone_number', 'branch', 'role', 'position',
+            'part', 'balance', 'is_superuser', 'date_joined'
+        )
 
         extra_kwargs = {
             'password': {'write_only': True, 'min_length': 5, 'max_length': 10},

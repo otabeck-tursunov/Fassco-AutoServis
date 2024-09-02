@@ -13,6 +13,8 @@ urlpatterns = [
 
     path('me/', GetMeRetrieveAPIView.as_view()),
 
+    path('', UserListCreateAPIView.as_view()),
+
     path('managers/', ManagerListCreateAPIView.as_view()),
     path('managers/<int:pk>/', ManagerRetrieveUpdateDestroyAPIView.as_view()),
 

@@ -371,8 +371,8 @@ class SalaryListCreateAPIView(ListCreateAPIView):
     queryset = Salary.objects.all()
     serializer_class = SalarySerializer
 
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
+    def get_serializer_class(self, *args, **kwargs):
+        if self.request.method == 'GET' or self.request.method == 'DELETE':
             return SalarySerializer
         return SalaryPostSerializer
 

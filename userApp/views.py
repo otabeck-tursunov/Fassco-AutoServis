@@ -132,6 +132,25 @@ class GetMeRetrieveAPIView(RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
+
+class UserListCreateAPIView(ListCreateAPIView):
+    permission_classes = (IsStaffStatus,)
+
+    queryset = User.objects.filter(role__in=['Manager', 'Worker', 'Staff']).order_by('id')
+    serializer_class = UserSerializer
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.request.method == 'GET':
+            return UserSerializer
+        return UserPostSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(branch=self.request.user.branch)
+
+    def perform_create(self, serializer):
+        serializer.save(is_staff=True, branch=self.request.user.branch)
+
+
 # class UserListCreateView(APIView):
 #     permission_classes = (IsSuperStatus,)
 #
