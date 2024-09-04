@@ -85,6 +85,7 @@ class WorkerRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         serializer.save(role='Worker', is_staff=True, branch=self.request.user.branch)
 
 
+
 class StaffListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsStaffStatus,)
 
