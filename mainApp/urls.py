@@ -23,4 +23,6 @@ urlpatterns = [
     path('services/', ServiceListCreateAPIView.as_view()),
     path('services/<int:pk>/', ServiceRetrieveUpdateDestroyAPIView.as_view()),
 
+    path('get-wallet/', GetWalletAPIView.as_view()),
+
 ]

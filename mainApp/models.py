@@ -1,5 +1,13 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+
+class Wallet(models.Model):
+    balance = models.FloatField(validators=[MinValueValidator(0)])
+
+    def __str__(self):
+        return str(self.balance)
 
 
 class Branch(models.Model):
@@ -134,7 +142,6 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
-
 
 # class IProvider(models.Model):
 #     provider = models.ForeignKey(Provider, on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('Provider'))

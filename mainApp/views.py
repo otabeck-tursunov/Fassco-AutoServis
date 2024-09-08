@@ -450,3 +450,21 @@ class ServiceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     def get_object(self):
         queryset = self.queryset.filter(branch=self.request.user.branch)
         return get_object_or_404(queryset, pk=self.kwargs['pk'])
+
+
+class GetWalletAPIView(APIView):
+    permission_classes = (IsStaffStatus,)
+
+    def get(self, request):
+        if Wallet.objects.exists():
+            wallet = Wallet.objects.last()
+        else:
+            wallet = Wallet.objects.create(balance=0)
+
+        branch = request.user.branch
+        wallet.balance += branch.balance
+        branch.balance = 0
+        branch.save()
+        wallet.save()
+
+        return Response(data={'success': True})

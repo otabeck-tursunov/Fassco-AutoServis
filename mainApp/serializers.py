@@ -155,3 +155,4 @@ class ServiceSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'branch': {'read_only': True}
         }
+

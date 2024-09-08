@@ -4,7 +4,7 @@ from .models import *
 
 
 class BranchAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'address', 'phone_number', 'created_at')
+    list_display = ('id', 'name', 'address', 'phone_number', 'balance', 'created_at')
     list_display_links = ('name',)
 
 
@@ -54,6 +54,11 @@ class ServiceAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
 
 
+class WalletAdmin(admin.ModelAdmin):
+    list_display = ('balance', )
+    list_display_links = ('balance',)
+
+
 admin.site.register(Branch, BranchAdmin)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Car, CarAdmin)
@@ -61,3 +66,4 @@ admin.site.register(Provider, ProviderAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ImportProduct, ImportProductAdmin)
 admin.site.register(Service, ServiceAdmin)
+admin.site.register(Wallet, WalletAdmin)
